@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#171717;}
+a{color:inherit;text-decoration:none;}
+::selection{background:#e6432a;color:#171717;}
+</style>
+</helmet>
+
+<div style="--bg:#171717;--panel:#1e1e1e;--panel2:#232323;--border:rgba(255,255,255,0.16);--border-strong:rgba(255,255,255,0.32);--fg:#f4f3ef;--muted:#8f8d87;--accent:{{ accentColor }};--font-d:'Anton',sans-serif;--font-m:'JetBrains Mono',monospace; background:var(--bg); color:var(--fg); font-family:var(--font-m); min-height:100vh; line-height:1.5;">
+
+  <!-- DOMAIN BAR -->
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; padding:9px clamp(20px,5vw,64px); border-bottom:1px solid var(--border); background:#131313; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted);">
+    <span>dpaul-software.uk</span>
+    <a href="https://www.dpaul.studio" target="_blank" rel="noopener" style="color:var(--muted);" style-hover="color:var(--fg);">A dPaul Studio Product</a>
+  </div>
+
+  <!-- NAV -->
+  <nav style="position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; padding:20px clamp(20px,5vw,64px); border-bottom:1px solid var(--border); background:rgba(23,23,23,0.92); backdrop-filter:blur(8px);">
+    <div style="display:flex; align-items:center; gap:14px;">
+      <span style="font-size:13px; letter-spacing:0.12em; color:var(--muted); text-transform:uppercase;">Web Media Converter</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:clamp(16px,3vw,36px); flex-wrap:wrap; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;">
+      <details style="position:relative;">
+        <summary style="list-style:none; cursor:pointer; color:var(--fg); opacity:0.85; display:flex; align-items:center; gap:6px;" style-hover="opacity:1;">Software <span style="font-size:9px;">▾</span></summary>
+        <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:220px; background:var(--panel); border:1px solid var(--border-strong); padding:6px; z-index:30;">
+          <a href="Home.dc.html" style="display:flex; flex-direction:column; gap:2px; padding:12px 14px; color:var(--fg);" style-hover="background:var(--panel2);">
+            <span style="font-weight:700;">Web Media Converter</span>
+            <span style="font-size:11px; color:var(--muted); text-transform:none; letter-spacing:normal;">Image &amp; video optimization</span>
+          </a>
+        </div>
+      </details>
+      <a href="#features" style="color:var(--fg); opacity:0.85;" style-hover="opacity:1;">Features</a>
+      <a href="#pricing" style="color:var(--fg); opacity:0.85;" style-hover="opacity:1;">Pricing</a>
+      <a href="Docs.dc.html" style="color:var(--fg); opacity:0.85;" style-hover="opacity:1;">Docs</a>
+      <a href="https://www.dpaul.studio" target="_blank" rel="noopener" style="color:var(--fg); opacity:0.85;" style-hover="opacity:1;">Portfolio</a>
+      <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="background:var(--accent); color:#171310; padding:10px 18px; font-weight:700; border:1px solid var(--accent);" style-hover="background:#171310; color:var(--accent);">Get WMC</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:clamp(32px,5vw,64px); align-items:start; padding:clamp(48px,8vw,110px) clamp(20px,5vw,64px) clamp(60px,8vw,120px); max-width:1360px; margin:0 auto; border-bottom:1px solid var(--border);">
+    <div>
+      <div style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(40px,6vw,72px); line-height:0.98; color:var(--fg); margin-bottom:12px; letter-spacing:0.005em;">dPaul Software</div>
+      <div style="margin-top:48px;">
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:18px;">Image &amp; Video Optimization for Mac</div>
+      <h1 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(40px,6vw,72px); line-height:0.98; margin:0 0 24px; letter-spacing:0.005em;">Stop shipping bloated images.</h1>
+      <p style="font-size:17px; color:var(--muted); max-width:520px; margin:0 0 36px;">WMC batch-converts PNG, JPG and video into WebP and AVIF — same look, a fraction of the weight. Faster pages, better rankings, fewer visitors bouncing before your hero image even loads.</p>
+      <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center; margin-bottom:18px;">
+        <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:16px 30px;" style-hover="background:transparent; color:var(--accent);">Get WMC — {{ proPrice }}</a>
+        <a href="Docs.dc.html" style="border:1px solid var(--border-strong); color:var(--fg); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:16px 30px;" style-hover="border-color:var(--fg);">See how it works</a>
+      </div>
+      <div style="font-size:12px; color:var(--muted); letter-spacing:0.05em;">One-time payment · No subscription · Instant download on Gumroad</div>
+      </div>
+    </div>
+    <div>
+      <img src="assets/app-screenshot.png" alt="Web Media Converter Pro app interface" style="width:100%; max-width:420px; display:block; margin:0 auto; filter:drop-shadow(0 30px 60px rgba(0,0,0,0.55));">
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:1000px; margin:0 auto; text-align:center; border-bottom:1px solid var(--border);">
+    <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">The Problem</div>
+    <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0 0 20px;">Unoptimized images are still the #1 cause of slow websites.</h2>
+    <p style="font-size:16px; color:var(--muted); max-width:640px; margin:0 auto;">Every uncompressed PNG your visitors download is time you're spending against yourself — slower first paint, worse Core Web Vitals, lower search rankings. Most sites never fix it because doing it by hand, file by file, is tedious. WMC does the whole folder in one pass.</p>
+  </section>
+
+  <!-- COMPARISON -->
+  <section style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:1000px; margin:0 auto; border-bottom:1px solid var(--border);">
+    <div style="text-align:center; margin-bottom:56px;">
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Benchmark</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0;">Same image. Different planet.</h2>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:22px;">
+      <sc-for list="{{ comparisonRows }}" as="row" hint-placeholder-count="4">
+        <div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">
+            <span style="color:var(--fg); font-weight:700;">{{ row.label }}</span>
+            <span style="color:var(--muted);">{{ row.size }}</span>
+          </div>
+          <div style="height:34px; background:var(--panel2); border:1px solid var(--border);">
+            <div style="height:100%; width:{{ row.pct }}%; background:{{ row.color }};"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <p style="font-size:12px; color:var(--muted); margin-top:28px; text-align:center;">Illustrative figures based on typical PNG/JPG → WebP/AVIF conversions. Real batch conversion walkthrough below.</p>
+  </section>
+
+  <!-- DEMO -->
+  <section style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:1200px; margin:0 auto; border-bottom:1px solid var(--border); display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:clamp(32px,5vw,64px); align-items:center;">
+    <div>
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">See It In Action</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,3.8vw,42px); line-height:1.05; margin:0 0 20px;">Watch a real batch convert in seconds.</h2>
+      <p style="font-size:16px; color:var(--muted); max-width:480px; margin:0;">A full folder of images and video, converted to WebP and WebM in one pass — with the exact file size reduction shown per file as it happens.</p>
+    </div>
+    <div style="justify-self:center; width:min(280px,80vw); aspect-ratio:9/16; border:1px solid var(--border-strong); position:relative; overflow:hidden; background:var(--panel);">
+      <video src="assets/wbc-v1.webm" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; display:block;"></video>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:1200px; margin:0 auto; border-bottom:1px solid var(--border);">
+    <div style="text-align:center; margin-bottom:56px;">
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">What's Inside</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0;">Built for people who ship.</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border);">
+      <sc-for list="{{ features }}" as="feat" hint-placeholder-count="6">
+        <div style="background:var(--panel); padding:32px 28px;">
+          <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">{{ feat.tag }}</div>
+          <h3 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:20px; margin:0 0 12px; letter-spacing:0.01em;">{{ feat.title }}</h3>
+          <p style="font-size:14px; color:var(--muted); margin:0;">{{ feat.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:980px; margin:0 auto; border-bottom:1px solid var(--border);">
+    <div style="text-align:center; margin-bottom:56px;">
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Pricing</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0;">One file-format problem. One payment.</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;">
+
+      <div style="border:1px solid var(--border); padding:36px 32px; display:flex; flex-direction:column;">
+        <div style="font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Standard</div>
+        <div style="font-family:var(--font-d); font-weight:400; font-size:44px; text-transform:uppercase; margin-bottom:24px;">Free</div>
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:14px; color:var(--muted); margin-bottom:32px; flex:1;">
+          <span>— Convert PNG &amp; JPG</span>
+          <span>— WebP export</span>
+          <span>— Single file at a time</span>
+        </div>
+        <div style="border:1px solid var(--border-strong); text-align:center; padding:14px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">Included with app</div>
+      </div>
+
+      <div style="border:1px solid var(--accent); padding:36px 32px; display:flex; flex-direction:column; position:relative; background:var(--panel);">
+        <div style="position:absolute; top:0; right:0; background:var(--accent); color:#171310; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:6px 12px;">Recommended</div>
+        <div style="font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;">Pro</div>
+        <div style="font-family:var(--font-d); font-weight:400; font-size:44px; text-transform:uppercase; margin-bottom:4px;">{{ proPrice }}</div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:24px;">One-time payment</div>
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:14px; color:var(--fg); margin-bottom:32px; flex:1;">
+          <span>— Everything in Standard</span>
+          <span>— Batch folder processing</span>
+          <span>— WebP + AVIF export</span>
+          <span>— Prefix / suffix &amp; compression control</span>
+          <span>— Free updates</span>
+        </div>
+        <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; text-align:center; padding:16px; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;" style-hover="background:transparent; color:var(--accent);">Get WMC Pro</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section style="padding:clamp(56px,7vw,90px) clamp(20px,5vw,64px); max-width:1200px; margin:0 auto; text-align:center; border-bottom:1px solid var(--border);">
+    <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,4vw,44px); line-height:1.05; margin:0 0 28px;">Stop losing visitors to load time.</h2>
+    <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="display:inline-block; background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:18px 36px;" style-hover="background:transparent; color:var(--accent);">Get WMC on Gumroad</a>
+    <div style="font-size:12px; color:var(--muted); margin-top:16px; letter-spacing:0.05em;">{{ proPrice }} one-time · instant download</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="padding:56px clamp(20px,5vw,64px) 40px; max-width:1360px; margin:0 auto; display:flex; flex-wrap:wrap; gap:40px; justify-content:space-between;">
+    <div style="max-width:280px;">
+      <p style="font-size:13px; color:var(--muted); margin:0;">Tools for people who make things.</p>
+    </div>
+    <div style="display:flex; gap:64px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Product</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
+          <a href="Docs.dc.html" style="opacity:0.85;" style-hover="opacity:1;">Docs</a>
+          <a href="#pricing" style="opacity:0.85;" style-hover="opacity:1;">Pricing</a>
+          <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="opacity:0.85;" style-hover="opacity:1;">Gumroad</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Connect</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
+          <a href="https://www.dpaul.studio" target="_blank" rel="noopener" style="opacity:0.85;" style-hover="opacity:1;">dpaul.studio</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div style="padding:20px clamp(20px,5vw,64px) 40px; max-width:1360px; margin:0 auto; border-top:1px solid var(--border); font-size:12px; color:var(--muted);">© 2026 dPaul. All rights reserved.</div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {}, &quot;gumroadUrl&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;https://davidpaul2.gumroad.com/l/dnldth&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;proPrice&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;£19.99&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;accentColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#e6432a&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#e6432a&quot;, &quot;#2ab5e6&quot;, &quot;#c9e62a&quot;, &quot;#e62a8f&quot;]}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      gumroadUrl: this.props.gumroadUrl ?? 'https://davidpaul2.gumroad.com/l/dnldth',
+      proPrice: this.props.proPrice ?? '£19.99',
+      accentColor: this.props.accentColor ?? '#e6432a',
+      comparisonRows: [
+        { label: 'PNG (original)', size: '100%', pct: 100, color: 'var(--muted)' },
+        { label: 'JPG (quality 90)', size: '~62%', pct: 62, color: 'var(--fg)' },
+        { label: 'WebP (WMC)', size: '~24%', pct: 24, color: 'var(--accent)' },
+        { label: 'AVIF (WMC)', size: '~18%', pct: 18, color: 'var(--accent)' }
+      ],
+      features: [
+        { tag: 'Batch', title: 'Batch Folder Processing', desc: 'Point WMC at a folder. It finds every image inside and converts the whole batch in one pass.' },
+        { tag: 'Source', title: 'Select Files Or Folders', desc: 'No drag and drop needed — choose exactly the files or folders you want converted.' },
+        { tag: 'Naming', title: 'Output Formatting', desc: 'Add a prefix or suffix, or keep original filenames. Your naming convention, respected.' },
+        { tag: 'Quality', title: 'Compression Control', desc: 'Dial WebP quality from 0–100 and weigh the tradeoff before you commit.' },
+        { tag: 'Platform', title: 'Native Mac App', desc: 'Fast and fully offline. Nothing gets uploaded to a server you don\u2019t control.' },
+        { tag: 'Safety', title: 'Non-Destructive', desc: 'Original files stay untouched. WMC writes new, optimized copies alongside them.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
