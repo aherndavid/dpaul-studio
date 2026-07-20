@@ -3,8 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -12,6 +10,10 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
+<link rel="manifest" href="site.webmanifest">
 <style>
 body{margin:0;background:#171717;}
 a{color:inherit;text-decoration:none;}
@@ -46,7 +48,7 @@ a{color:inherit;text-decoration:none;}
       <a href="#pricing" style="color:var(--fg); opacity:0.85;" style-hover="opacity:1;">Pricing</a>
       <a href="Docs.dc.html" style="color:var(--fg); opacity:0.85;" style-hover="opacity:1;">Docs</a>
       <a href="https://www.dpaul.studio" target="_blank" rel="noopener" style="color:var(--fg); opacity:0.85;" style-hover="opacity:1;">Portfolio</a>
-      <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="background:var(--accent); color:#171310; padding:10px 18px; font-weight:700; border:1px solid var(--accent);" style-hover="background:#171310; color:var(--accent);">Get WMC</a>
+      <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); color:#171310; padding:10px 18px; font-weight:700; border:1px solid var(--accent);" style-hover="background:#171310; color:var(--accent);">Get WMC</a>
     </div>
   </nav>
 
@@ -59,10 +61,10 @@ a{color:inherit;text-decoration:none;}
       <h1 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(40px,6vw,72px); line-height:0.98; margin:0 0 24px; letter-spacing:0.005em;">Stop shipping bloated images.</h1>
       <p style="font-size:17px; color:var(--muted); max-width:520px; margin:0 0 36px;">WMC batch-converts PNG, JPG and video into WebP and AVIF — same look, a fraction of the weight. Faster pages, better rankings, fewer visitors bouncing before your hero image even loads.</p>
       <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center; margin-bottom:18px;">
-        <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:16px 30px;" style-hover="background:transparent; color:var(--accent);">Get WMC — {{ proPrice }}</a>
+        <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:16px 30px;" style-hover="background:transparent; color:var(--accent);">Get WMC — {{ proPrice }}</a>
         <a href="Docs.dc.html" style="border:1px solid var(--border-strong); color:var(--fg); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:16px 30px;" style-hover="border-color:var(--fg);">See how it works</a>
       </div>
-      <div style="font-size:12px; color:var(--muted); letter-spacing:0.05em;">One-time payment · No subscription · Instant download on Gumroad</div>
+      <div style="font-size:12px; color:var(--muted); letter-spacing:0.05em;">One-time payment · No subscription · Instant download via Stripe</div>
       </div>
     </div>
     <div>
@@ -124,7 +126,7 @@ a{color:inherit;text-decoration:none;}
         <div style="background:var(--panel); padding:32px 28px;">
           <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">{{ feat.tag }}</div>
           <h3 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:20px; margin:0 0 12px; letter-spacing:0.01em;">{{ feat.title }}</h3>
-          <p style="font-size:14px; color:var(--muted); margin:0;">{{ feat.desc }}</p>
+          <p style="font-size:14px; color:var(--muted); margin:0; display:flex; gap:8px;"><span style="color:var(--accent);">•</span><span>{{ feat.desc }}</span></p>
         </div>
       </sc-for>
     </div>
@@ -161,7 +163,7 @@ a{color:inherit;text-decoration:none;}
           <span>— Prefix / suffix &amp; compression control</span>
           <span>— Free updates</span>
         </div>
-        <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; text-align:center; padding:16px; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;" style-hover="background:transparent; color:var(--accent);">Get WMC Pro</a>
+        <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; text-align:center; padding:16px; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;" style-hover="background:transparent; color:var(--accent);">Get WMC Pro</a>
       </div>
 
     </div>
@@ -170,7 +172,7 @@ a{color:inherit;text-decoration:none;}
   <!-- CTA BAND -->
   <section style="padding:clamp(56px,7vw,90px) clamp(20px,5vw,64px); max-width:1200px; margin:0 auto; text-align:center; border-bottom:1px solid var(--border);">
     <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,4vw,44px); line-height:1.05; margin:0 0 28px;">Stop losing visitors to load time.</h2>
-    <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="display:inline-block; background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:18px 36px;" style-hover="background:transparent; color:var(--accent);">Get WMC on Gumroad</a>
+    <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="display:inline-block; background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:18px 36px;" style-hover="background:transparent; color:var(--accent);">Get WMC on Stripe</a>
     <div style="font-size:12px; color:var(--muted); margin-top:16px; letter-spacing:0.05em;">{{ proPrice }} one-time · instant download</div>
   </section>
 
@@ -185,7 +187,7 @@ a{color:inherit;text-decoration:none;}
         <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
           <a href="Docs.dc.html" style="opacity:0.85;" style-hover="opacity:1;">Docs</a>
           <a href="#pricing" style="opacity:0.85;" style-hover="opacity:1;">Pricing</a>
-          <a href="{{ gumroadUrl }}" target="_blank" rel="noopener" style="opacity:0.85;" style-hover="opacity:1;">Gumroad</a>
+          <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="opacity:0.85;" style-hover="opacity:1;">Stripe</a>
         </div>
       </div>
       <div>
@@ -201,11 +203,11 @@ a{color:inherit;text-decoration:none;}
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {}, &quot;gumroadUrl&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;https://davidpaul2.gumroad.com/l/dnldth&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;proPrice&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;£19.99&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;accentColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#e6432a&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#e6432a&quot;, &quot;#2ab5e6&quot;, &quot;#c9e62a&quot;, &quot;#e62a8f&quot;]}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {}, &quot;stripeUrl&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;https://buy.stripe.com/bJe6oJ1zp3BI0w9apl6wE00&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;proPrice&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;£19.99&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;accentColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#e6432a&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#e6432a&quot;, &quot;#2ab5e6&quot;, &quot;#c9e62a&quot;, &quot;#e62a8f&quot;]}}">
 class Component extends DCLogic {
   renderVals() {
     return {
-      gumroadUrl: this.props.gumroadUrl ?? 'https://davidpaul2.gumroad.com/l/dnldth',
+      stripeUrl: this.props.stripeUrl ?? 'https://buy.stripe.com/bJe6oJ1zp3BI0w9apl6wE00',
       proPrice: this.props.proPrice ?? '£19.99',
       accentColor: this.props.accentColor ?? '#e6432a',
       comparisonRows: [
