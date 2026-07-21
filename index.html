@@ -5,45 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <style>
-    /* 1. Define the cross-fade animation */
-    @keyframes imageFade {
-        0% { opacity: 0; }
-        15% { opacity: 1; } /* Fade in quickly */
-        85% { opacity: 1; } /* Stay visible */
-        100% { opacity: 0; } /* Fade out at the end */
-    }
-
-    /* 2. Style the container holding the rotating images */
+    /* 1. Container for the rotating hero images */
     .hero-image-rotator {
         position: relative;
         width: 100%;
-        max-width: 420px;
-        aspect-ratio: 498 / 546; /* Maintain aspect ratio of your images */
+        max-width: 336px; /* Reduced by ~20% from 420px */
+        aspect-ratio: 498 / 546; 
         display: block;
         margin: 0 auto;
         filter: drop-shadow(0 30px 60px rgba(0,0,0,0.55));
     }
 
-    /* 3. Base styles for the images within the rotator */
+    /* 2. Lock both images to identical dimensions and overlay them */
     .hero-image-rotator img {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: auto;
-        opacity: 0; /* Start hidden */
-        transition: opacity 1s ease-in-out; /* Smooth transition */
+        height: 100%;
+        object-fit: contain; /* Ensures both match size constraints identically */
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
     }
 
-    /* 4. Class applied by JS to show the active image */
+    /* 3. Active state for the currently visible image */
     .hero-image-rotator img.active {
         opacity: 1;
-        z-index: 1; /* Bring active image to front */
+        z-index: 1;
     }
 
-    /* 5. Optional: Ensure the first image isn't instantly shown before JS loads */
+    /* 4. Fallback for the first image before script kicks in */
     .hero-image-rotator img:first-child {
-        position: relative; /* Keeps space before absolute positioning kicks in */
+        position: relative;
         opacity: 1;
     }
     .hero-image-rotator img:not(:first-child) {
@@ -115,10 +108,10 @@ a{color:inherit;text-decoration:none;}
       <div style="font-size:12px; color:var(--muted); letter-spacing:0.05em;">One-time payment · No subscription · Instant download via Stripe</div>
       </div>
     </div>
-    <!-- UPDATED HERO IMAGE CONTAINER -->
-    <div class="hero-image-rotator">
+    <!-- ROTATING HERO IMAGE CONTAINER -->
+    <div class="hero-image-rotator" id="heroRotator">
       <img src="assets/wmc.webp" alt="Web Media Converter standard interface" class="active">
-      <img src="assets/wmc-pro.webp" alt="Web Media Converter Pro interface with advanced options">
+      <img src="assets/wmc-pro.webp" alt="Web Media Converter Pro interface">
     </div>
   </section>
 
@@ -170,4 +163,136 @@ a{color:inherit;text-decoration:none;}
   </section>
 
   <!-- FEATURES -->
-  <section id="features" style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64
+  <section id="features" style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:1200px; margin:0 auto; border-bottom:1px solid var(--border);">
+    <div style="text-align:center; margin-bottom:56px;">
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">What's Inside</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0;">Built for people who ship.</h2>
+    </div>
+    <div class="features-grid" style="background:var(--border); border:1px solid var(--border);">
+      <sc-for list="{{ features }}" as="feat" hint-placeholder-count="6">
+        <div style="background:var(--panel); padding:32px 28px;">
+          <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">{{ feat.tag }}</div>
+          <h3 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:20px; margin:0 0 12px; letter-spacing:0.01em;">{{ feat.title }}</h3>
+          <p style="font-size:14px; color:var(--muted); margin:0; display:flex; gap:8px;"><span style="color:var(--accent);">•</span><span>{{ feat.desc }}</span></p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:980px; margin:0 auto; border-bottom:1px solid var(--border);">
+    <div style="text-align:center; margin-bottom:56px;">
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Pricing</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0;">One file-format problem. One payment.</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;">
+
+      <div style="border:1px solid var(--border); padding:36px 32px; display:flex; flex-direction:column;">
+        <div style="font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Standard</div>
+        <div style="font-family:var(--font-d); font-weight:400; font-size:44px; text-transform:uppercase; margin-bottom:24px;">Free</div>
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:14px; color:var(--muted); margin-bottom:32px; flex:1;">
+          <span>— Convert PNG &amp; JPG</span>
+          <span>— WebP export</span>
+          <span>— Single file at a time</span>
+        </div>
+        <div style="border:1px solid var(--border-strong); text-align:center; padding:14px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">Included with app</div>
+      </div>
+
+      <div style="border:1px solid var(--accent); padding:36px 32px; display:flex; flex-direction:column; position:relative; background:var(--panel);">
+        <div style="position:absolute; top:0; right:0; background:var(--accent); color:#171310; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:6px 12px;">Recommended</div>
+        <div style="font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;">Pro</div>
+        <div style="font-family:var(--font-d); font-weight:400; font-size:44px; text-transform:uppercase; margin-bottom:4px;">{{ proPrice }}</div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:24px;">One-time payment</div>
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:14px; color:var(--fg); margin-bottom:32px; flex:1;">
+          <span>— Everything in Standard</span>
+          <span>— Batch folder processing</span>
+          <span>— WebP + AVIF export</span>
+          <span>— Prefix / suffix &amp; compression control</span>
+          <span>— Free updates</span>
+        </div>
+        <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; text-align:center; padding:16px; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;" style-hover="background:transparent; color:var(--accent);">Get WMC Pro</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section style="padding:clamp(56px,7vw,90px) clamp(20px,5vw,64px); max-width:1200px; margin:0 auto; text-align:center; border-bottom:1px solid var(--border);">
+    <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,4vw,44px); line-height:1.05; margin:0 0 28px;">Stop losing visitors to load time.</h2>
+    <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="display:inline-block; background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:18px 36px;" style-hover="background:transparent; color:var(--accent);">Get WMC on Stripe</a>
+    <div style="font-size:12px; color:var(--muted); margin-top:16px; letter-spacing:0.05em;">{{ proPrice }} one-time · instant download</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="padding:56px clamp(20px,5vw,64px) 40px; max-width:1360px; margin:0 auto; display:flex; flex-wrap:wrap; gap:40px; justify-content:space-between;">
+    <div style="max-width:280px;">
+      <p style="font-size:13px; color:var(--muted); margin:0;">Tools for people who make things.</p>
+    </div>
+    <div style="display:flex; gap:64px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Product</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
+          <a href="#pricing" style="opacity:0.85;" style-hover="opacity:1;">Pricing</a>
+          <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="opacity:0.85;" style-hover="opacity:1;">Stripe</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Connect</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
+          <a href="https://www.dpaul.studio" target="_blank" rel="noopener" style="opacity:0.85;" style-hover="opacity:1;">dpaul.studio</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div style="padding:20px clamp(20px,5vw,64px) 40px; max-width:1360px; margin:0 auto; border-top:1px solid var(--border); font-size:12px; color:var(--muted);">© 2026 dPaul. All rights reserved.</div>
+
+    </div>
+</div>
+
+</x-dc>
+
+<!-- 10-SECOND IMAGE ROTATOR SCRIPT -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const rotator = document.getElementById('heroRotator');
+    if (!rotator) return;
+    const images = rotator.querySelectorAll('img');
+    if (images.length < 2) return;
+    
+    let currentIndex = 0;
+    setInterval(() => {
+      images[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % images.length;
+      images[currentIndex].classList.add('active');
+    }, 10000); // 10 seconds interval
+  });
+</script>
+
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {}, &quot;stripeUrl&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;https://buy.stripe.com/bJe6oJ1zp3BI0w9apl6wE00&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;proPrice&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;£19.99&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;accentColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#e6432a&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#e6432a&quot;, &quot;#2ab5e6&quot;, &quot;#c9e62a&quot;, &quot;#e62a8f&quot;]}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      stripeUrl: this.props.stripeUrl ?? 'https://buy.stripe.com/bJe6oJ1zp3BI0w9apl6wE00',
+      proPrice: this.props.proPrice ?? '£19.99',
+      accentColor: this.props.accentColor ?? '#e6432a',
+      comparisonRows: [
+        { label: 'PNG (original)', size: '100%', pct: 100, color: 'var(--muted)' },
+        { label: 'JPG (quality 90)', size: '~62%', pct: 62, color: 'var(--fg)' },
+        { label: 'WebP (WMC)', size: '~24%', pct: 24, color: 'var(--accent)' },
+        { label: 'AVIF (WMC)', size: '~18%', pct: 18, color: 'var(--accent)' }
+      ],
+      features: [
+        { tag: 'Batch', title: 'Batch Folder Processing', desc: 'Point WMC at a folder. It finds every image inside and converts the whole batch in one pass.' },
+        { tag: 'Source', title: 'Select Files Or Folders', desc: 'No drag and drop needed — choose exactly the files or folders you want converted.' },
+        { tag: 'Naming', title: 'Output Formatting', desc: 'Add a prefix or suffix, or keep original filenames. Your naming convention, respected.' },
+        { tag: 'Quality', title: 'Compression Control', desc: 'Dial WebP quality from 0–100 and weigh the tradeoff before you commit.' },
+        { tag: 'Platform', title: 'Native Mac App', desc: 'Fast and fully offline. Nothing gets uploaded to a server you don\u2019t control.' },
+        { tag: 'Safety', title: 'Non-Destructive', desc: 'Original files stay untouched. WMC writes new, optimised copies alongside them.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
