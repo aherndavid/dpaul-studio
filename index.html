@@ -18,6 +18,8 @@
 body{margin:0;background:#171717;}
 a{color:inherit;text-decoration:none;}
 ::selection{background:#e6432a;color:#171717;}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;}
+@media (max-width:720px){.features-grid{grid-template-columns:1fr;}}
 </style>
 </helmet>
 
@@ -111,7 +113,9 @@ a{color:inherit;text-decoration:none;}
       <p style="font-size:16px; color:var(--muted); max-width:480px; margin:0;">A full folder of images and video, converted to WebP and WebM in one pass — with the exact file size reduction shown per file as it happens.</p>
     </div>
     <div style="justify-self:center; width:min(280px,80vw); aspect-ratio:9/16; border:1px solid var(--border-strong); position:relative; overflow:hidden; background:var(--panel);">
-      <video src="assets/wmc-example.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; display:block;"></video>
+      <video autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; display:block;">
+        <source src="assets/wmc-example.webm" type="video/webm">
+      </video>
     </div>
   </section>
 
@@ -121,7 +125,7 @@ a{color:inherit;text-decoration:none;}
       <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">What's Inside</div>
       <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0;">Built for people who ship.</h2>
     </div>
-    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border);">
+    <div class="features-grid" style="background:var(--border); border:1px solid var(--border);">
       <sc-for list="{{ features }}" as="feat" hint-placeholder-count="6">
         <div style="background:var(--panel); padding:32px 28px;">
           <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">{{ feat.tag }}</div>
