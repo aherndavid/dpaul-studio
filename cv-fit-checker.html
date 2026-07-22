@@ -377,19 +377,44 @@ Include 3-5 categories covering things like: required/basic qualifications, rele
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 1500,
+        max_tokens: 2500,
         system: systemPrompt,
         messages: [{ role: "user", content: userPrompt }]
       })
     });
     const data = await response.json();
+
+    if (data.error) {
+      throw new Error('API error: ' + (data.error.message || JSON.stringify(data.error)));
+    }
+    if (!response.ok) {
+      throw new Error('Request failed (status ' + response.status + ')');
+    }
+
     const textBlocks = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
-    const clean = textBlocks.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    if (!textBlocks.trim()) {
+      throw new Error('Empty response from model' + (data.stop_reason ? ' (stop_reason: ' + data.stop_reason + ')' : ''));
+    }
+
+    let clean = textBlocks.replace(/```json/gi, '').replace(/```/g, '').trim();
+    // If the model added any preamble/postamble text, isolate the outermost {...} block
+    const firstBrace = clean.indexOf('{');
+    const lastBrace = clean.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+      clean = clean.slice(firstBrace, lastBrace + 1);
+    }
+
+    let parsed;
+    try {
+      parsed = JSON.parse(clean);
+    } catch (parseErr) {
+      console.error('Raw model output that failed to parse:', textBlocks);
+      throw new Error('Could not parse the model\'s response as JSON: ' + parseErr.message);
+    }
     renderResults(parsed);
   }catch(err){
     console.error(err);
-    showError('Something went wrong reading the response. Try again — sometimes the model wraps the JSON oddly.');
+    showError(err && err.message ? err.message : 'Something went wrong. Try again.');
   }finally{
     clearInterval(msgInterval);
     loadingBox.style.display = 'none';
