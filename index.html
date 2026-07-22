@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
 <link rel="manifest" href="site.webmanifest">
 <style>
-body{margin:0;background:#171717;}
+body{margin:0;background:#171717;overflow-x:hidden;}
 a{color:inherit;text-decoration:none;}
 ::selection{background:#e6432a;color:#171717;}
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;}
@@ -29,92 +29,98 @@ a{color:inherit;text-decoration:none;}
 </style>
 </helmet>
 
-<div style="--bg:#171717;--panel:#1e1e1e;--panel2:#232323;--border:rgba(255,255,255,0.16);--border-strong:rgba(255,255,255,0.32);--fg:#f4f3ef;--muted:#8f8d87;--accent:{{ accentColor }};--font-d:'Anton',sans-serif;--font-m:'JetBrains Mono',monospace; background-color:var(--bg); background-image:url('assets/dpaul-wallpaper.webp'); background-repeat:repeat; background-size:340px; background-attachment:fixed; position:relative; color:var(--fg); font-family:var(--font-m); min-height:100vh; line-height:1.5;">
+<div style="--bg:#171717;--panel:#1e1e1e;--panel2:#232323;--border:rgba(255,255,255,0.16);--border-strong:rgba(255,255,255,0.32);--fg:#f4f3ef;--muted:#8f8d87;--accent:{{ accentColor }};--font-d:'Anton',sans-serif;--font-m:'JetBrains Mono',monospace; background-color:var(--bg); background-image:url('assets/dpaul-wallpaper.webp'); background-repeat:repeat; background-size:340px; background-attachment:fixed; position:relative; color:var(--fg); font-family:var(--font-m); min-height:100vh; line-height:1.5; width:100%; max-width:100%; overflow-x:hidden;">
     <div style="position:absolute; inset:0; background:var(--bg); opacity:0.97; pointer-events:none; z-index:0;"></div>
-    <div style="position:relative; z-index:1;">
+    <div style="position:relative; z-index:1; width:100%;">
 
   <!-- NAV -->
-  <nav style="position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; padding:16px clamp(20px,5vw,64px); border-bottom:1px solid var(--border); background:rgba(23,23,23,0.92); backdrop-filter:blur(8px);">
-    <div style="display:flex; align-items:center; gap:16px;">
-      <img src="assets/dpaul-software-logo.webp" alt="dPaul Software logo" style="width:103px; height:103px; display:block;">
-      <span style="font-size:17px; letter-spacing:0.12em; color:var(--muted); text-transform:uppercase;">Web Media Converter</span>
+  <nav style="position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:16px clamp(16px,4vw,64px); border-bottom:1px solid var(--border); background:rgba(23,23,23,0.92); backdrop-filter:blur(8px); box-sizing:border-box; width:100%;">
+    <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+      <img src="assets/dpaul-software-logo.webp" alt="dPaul Software logo" style="width:72px; height:72px; display:block; flex-shrink:0;">
+      <span style="font-size:14px; letter-spacing:0.12em; color:var(--muted); text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Web Media Converter</span>
     </div>
-    <div style="display:flex; align-items:center; gap:clamp(16px,3vw,36px); flex-wrap:wrap; font-size:17px; letter-spacing:0.08em; text-transform:uppercase;">
+    <div style="display:flex; align-items:center; gap:clamp(12px,2vw,28px); flex-wrap:wrap; font-size:15px; letter-spacing:0.08em; text-transform:uppercase;">
       <details style="position:relative;">
-        <summary style="list-style:none; cursor:pointer; color:var(--fg); opacity:0.85; display:flex; align-items:center; gap:6px;" style-hover="opacity:1;">Software <span style="font-size:9px;">▾</span></summary>
-        <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:220px; background:var(--panel); border:1px solid var(--border-strong); padding:6px; z-index:30;">
-          <a href="index.html" style="display:flex; flex-direction:column; gap:2px; padding:12px 14px; color:var(--fg);" style-hover="background:var(--panel2);">
+        <summary style="list-style:none; cursor:pointer; color:var(--fg); opacity:0.85; display:flex; align-items:center; gap:6px;">Software <span style="font-size:9px;">▾</span></summary>
+        <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:200px; background:var(--panel); border:1px solid var(--border-strong); padding:6px; z-index:30;">
+          <a href="index.html" style="display:flex; flex-direction:column; gap:2px; padding:10px 12px; color:var(--fg);">
             <span style="font-weight:700;">Web Media Converter</span>
             <span style="font-size:11px; color:var(--muted); text-transform:none; letter-spacing:normal;">Image &amp; video optimisation</span>
           </a>
         </div>
       </details>
-      <a href="#pricing" style="color:var(--fg); opacity:0.85;" style-hover="opacity:1;">Pricing</a>
-      <a href="https://www.dpaul.studio" target="_blank" rel="noopener" style="color:var(--fg); opacity:0.85;" style-hover="opacity:1;">Portfolio</a>
-      <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); color:#171310; padding:10px 18px; font-weight:700; border:1px solid var(--accent);" style-hover="background:#171310; color:var(--accent);">Get WMC</a>
+      <details style="position:relative;">
+        <summary style="list-style:none; cursor:pointer; color:var(--fg); opacity:0.85; display:flex; align-items:center; gap:6px;">Tools <span style="font-size:9px;">▾</span></summary>
+        <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:200px; background:var(--panel); border:1px solid var(--border-strong); padding:6px; z-index:30;">
+          <a href="cv-fit-checker.html" style="display:flex; flex-direction:column; gap:2px; padding:10px 12px; color:var(--fg);">
+            <span style="font-weight:700;">CV Fit Checker</span>
+            <span style="font-size:11px; color:var(--muted); text-transform:none; letter-spacing:normal;">Check your CV against a job listing</span>
+          </a>
+        </div>
+      </details>
+      <a href="#pricing" style="color:var(--fg); opacity:0.85;">Pricing</a>
+      <a href="https://www.dpaul.studio" target="_blank" rel="noopener" style="color:var(--fg); opacity:0.85;">Portfolio</a>
+      <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); color:#171310; padding:8px 14px; font-weight:700; border:1px solid var(--accent); white-space:nowrap;">Get WMC</a>
     </div>
   </nav>
 
   <!-- HERO -->
-  <section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:clamp(32px,5vw,64px); align-items:start; padding:clamp(48px,8vw,110px) clamp(20px,5vw,64px) clamp(60px,8vw,120px); max-width:1360px; margin:0 auto; border-bottom:1px solid var(--border);">
+  <section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:clamp(32px,5vw,64px); align-items:start; padding:clamp(36px,6vw,110px) clamp(16px,4vw,64px) clamp(48px,6vw,120px); max-width:1360px; margin:0 auto; border-bottom:1px solid var(--border); box-sizing:border-box;">
     <div>
-      <div style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(40px,6vw,72px); line-height:0.98; color:var(--fg); margin-bottom:12px; letter-spacing:0.005em;">dPaul Software</div>
-      <div style="margin-top:48px;">
-      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:18px;">Image &amp; Video Optimisation for Mac</div>
-      <h1 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(40px,6vw,72px); line-height:0.98; margin:0 0 24px; letter-spacing:0.005em;">Stop shipping bloated images.</h1>
-      <p style="font-size:17px; color:var(--muted); max-width:520px; margin:0 0 36px;">WMC batch-converts PNG, JPG and video into WebP and AVIF — same look, a fraction of the weight. Faster pages, better rankings, fewer visitors bouncing before your hero image even loads.</p>
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">Image &amp; Video Optimisation for Mac</div>
+      <h1 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(36px,5.5vw,72px); line-height:0.98; margin:0 0 20px; letter-spacing:0.005em;">Stop shipping bloated images.</h1>
+      <p style="font-size:16px; color:var(--muted); max-width:520px; margin:0 0 32px; line-height:1.6;">WMC batch-converts PNG, JPG and video into WebP and AVIF — same look, a fraction of the weight. Faster pages, better rankings, fewer visitors bouncing before your hero image even loads.</p>
       <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center; margin-bottom:18px;">
-        <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:16px 30px;" style-hover="background:transparent; color:var(--accent);">Get WMC — {{ proPrice }}</a>
+        <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:14px 26px; display:inline-block; text-align:center;">Get WMC — {{ proPrice }}</a>
       </div>
       <div style="font-size:12px; color:var(--muted); letter-spacing:0.05em;">One-time payment · No subscription · Instant download via Stripe</div>
-      </div>
     </div>
     <!-- ROTATING HERO IMAGE CONTAINER -->
-    <div class="hero-image-rotator" id="heroRotator">
+    <div class="hero-image-rotator" id="heroRotator" style="width:100%; box-sizing:border-box;">
       <img src="assets/wmc.webp" alt="Web Media Converter standard interface">
       <img src="assets/wmc-pro.webp" alt="Web Media Converter Pro interface">
     </div>
   </section>
 
   <!-- PROBLEM -->
-  <section style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:1000px; margin:0 auto; text-align:center; border-bottom:1px solid var(--border);">
-    <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">The Problem</div>
-    <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0 0 20px;">Unoptimised images are still the #1 cause of slow websites.</h2>
-    <p style="font-size:16px; color:var(--muted); max-width:640px; margin:0 auto;">Every uncompressed PNG your visitors download is time you're spending against yourself — slower first paint, worse Core Web Vitals, lower search rankings. Most sites never fix it because doing it by hand, file by file, is tedious. WMC does the whole folder in one pass.</p>
+  <section style="padding:clamp(48px,7vw,110px) clamp(16px,4vw,64px); max-width:1000px; margin:0 auto; text-align:center; border-bottom:1px solid var(--border); box-sizing:border-box;">
+    <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">The Problem</div>
+    <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,4vw,46px); line-height:1.05; margin:0 0 16px;">Unoptimised images are still the #1 cause of slow websites.</h2>
+    <p style="font-size:15px; color:var(--muted); max-width:640px; margin:0 auto; line-height:1.6;">Every uncompressed PNG your visitors download is time you're spending against yourself — slower first paint, worse Core Web Vitals, lower search rankings. Most sites never fix it because doing it by hand, file by file, is tedious. WMC does the whole folder in one pass.</p>
   </section>
 
   <!-- COMPARISON -->
-  <section style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:1000px; margin:0 auto; border-bottom:1px solid var(--border);">
-    <div style="text-align:center; margin-bottom:56px;">
-      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Benchmark</div>
-      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0;">Same image. Different planet.</h2>
+  <section style="padding:clamp(48px,7vw,110px) clamp(16px,4vw,64px); max-width:1000px; margin:0 auto; border-bottom:1px solid var(--border); box-sizing:border-box;">
+    <div style="text-align:center; margin-bottom:40px;">
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">Benchmark</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,4vw,46px); line-height:1.05; margin:0;">Same image. Different planet.</h2>
     </div>
 
-    <div style="display:flex; flex-direction:column; gap:22px;">
+    <div style="display:flex; flex-direction:column; gap:18px;">
       <sc-for list="{{ comparisonRows }}" as="row" hint-placeholder-count="4">
         <div>
-          <div style="display:flex; justify-content:space-between; font-size:13px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; font-size:13px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px;">
             <span style="color:var(--fg); font-weight:700;">{{ row.label }}</span>
             <span style="color:var(--muted);">{{ row.size }}</span>
           </div>
-          <div style="height:34px; background:var(--panel2); border:1px solid var(--border);">
+          <div style="height:30px; background:var(--panel2); border:1px solid var(--border);">
             <div style="height:100%; width:{{ row.pct }}%; background:{{ row.color }};"></div>
           </div>
         </div>
       </sc-for>
     </div>
 
-    <p style="font-size:12px; color:var(--muted); margin-top:28px; text-align:center;">Illustrative figures based on typical PNG/JPG → WebP/AVIF conversions. Real batch conversion walkthrough below.</p>
+    <p style="font-size:12px; color:var(--muted); margin-top:24px; text-align:center; line-height:1.5;">Illustrative figures based on typical PNG/JPG → WebP/AVIF conversions. Real batch conversion walkthrough below.</p>
   </section>
 
   <!-- DEMO -->
-  <section style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:1200px; margin:0 auto; border-bottom:1px solid var(--border); display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:clamp(32px,5vw,64px); align-items:center;">
+  <section style="padding:clamp(48px,7vw,110px) clamp(16px,4vw,64px); max-width:1200px; margin:0 auto; border-bottom:1px solid var(--border); display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:clamp(32px,5vw,64px); align-items:center; box-sizing:border-box;">
     <div>
-      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">See It In Action</div>
-      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,3.8vw,42px); line-height:1.05; margin:0 0 20px;">Watch a real batch convert in seconds.</h2>
-      <p style="font-size:16px; color:var(--muted); max-width:480px; margin:0;">A full folder of images and video, converted to WebP and WebM in one pass — with the exact file size reduction shown per file as it happens.</p>
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">See It In Action</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(24px,3.5vw,42px); line-height:1.05; margin:0 0 16px;">Watch a real batch convert in seconds.</h2>
+      <p style="font-size:15px; color:var(--muted); max-width:480px; margin:0; line-height:1.6;">A full folder of images and video, converted to WebP and WebM in one pass — with the exact file size reduction shown per file as it happens.</p>
     </div>
-    <div style="justify-self:center; width:min(280px,80vw); aspect-ratio:9/16; border:1px solid var(--border-strong); position:relative; overflow:hidden; background:var(--panel);">
+    <div style="justify-self:center; width:min(260px,85vw); aspect-ratio:9/16; border:1px solid var(--border-strong); position:relative; overflow:hidden; background:var(--panel); box-sizing:border-box;">
       <video id="demoVideo" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; display:block;">
         <source src="assets/wmc-example.webm" type="video/webm">
         <source src="assets/wmc-example.mp4" type="video/mp4">
@@ -124,88 +130,88 @@ a{color:inherit;text-decoration:none;}
   </section>
 
   <!-- FEATURES -->
-  <section id="features" style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:1200px; margin:0 auto; border-bottom:1px solid var(--border);">
-    <div style="text-align:center; margin-bottom:56px;">
-      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">What's Inside</div>
-      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0;">Built for people who ship.</h2>
+  <section id="features" style="padding:clamp(48px,7vw,110px) clamp(16px,4vw,64px); max-width:1200px; margin:0 auto; border-bottom:1px solid var(--border); box-sizing:border-box;">
+    <div style="text-align:center; margin-bottom:40px;">
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">What's Inside</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,4vw,46px); line-height:1.05; margin:0;">Built for people who ship.</h2>
     </div>
     <div class="features-grid" style="background:var(--border); border:1px solid var(--border);">
       <sc-for list="{{ features }}" as="feat" hint-placeholder-count="6">
-        <div style="background:var(--panel); padding:32px 28px;">
-          <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">{{ feat.tag }}</div>
-          <h3 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:20px; margin:0 0 12px; letter-spacing:0.01em;">{{ feat.title }}</h3>
-          <p style="font-size:14px; color:var(--muted); margin:0; display:flex; gap:8px;"><span style="color:var(--accent);">•</span><span>{{ feat.desc }}</span></p>
+        <div style="background:var(--panel); padding:28px 22px; box-sizing:border-box;">
+          <div style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;">{{ feat.tag }}</div>
+          <h3 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:19px; margin:0 0 10px; letter-spacing:0.01em;">{{ feat.title }}</h3>
+          <p style="font-size:14px; color:var(--muted); margin:0; display:flex; gap:8px; line-height:1.5;"><span style="color:var(--accent);">•</span><span>{{ feat.desc }}</span></p>
         </div>
       </sc-for>
     </div>
   </section>
 
   <!-- PRICING -->
-  <section id="pricing" style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,64px); max-width:980px; margin:0 auto; border-bottom:1px solid var(--border);">
-    <div style="text-align:center; margin-bottom:56px;">
-      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Pricing</div>
-      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(28px,4.2vw,46px); line-height:1.05; margin:0;">One file-format problem. One payment.</h2>
+  <section id="pricing" style="padding:clamp(48px,7vw,110px) clamp(16px,4vw,64px); max-width:980px; margin:0 auto; border-bottom:1px solid var(--border); box-sizing:border-box;">
+    <div style="text-align:center; margin-bottom:40px;">
+      <div style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;">Pricing</div>
+      <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,4vw,46px); line-height:1.05; margin:0;">One file-format problem. One payment.</h2>
     </div>
-    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px;">
 
-      <div style="border:1px solid var(--border); padding:36px 32px; display:flex; flex-direction:column;">
-        <div style="font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:10px;">Standard</div>
-        <div style="font-family:var(--font-d); font-weight:400; font-size:44px; text-transform:uppercase; margin-bottom:24px;">Free</div>
-        <div style="display:flex; flex-direction:column; gap:12px; font-size:14px; color:var(--muted); margin-bottom:32px; flex:1;">
+      <div style="border:1px solid var(--border); padding:30px 24px; display:flex; flex-direction:column; box-sizing:border-box;">
+        <div style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px;">Standard</div>
+        <div style="font-family:var(--font-d); font-weight:400; font-size:40px; text-transform:uppercase; margin-bottom:20px;">Free</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px; color:var(--muted); margin-bottom:28px; flex:1;">
           <span>— Convert PNG &amp; JPG</span>
           <span>— WebP export</span>
           <span>— Single file at a time</span>
         </div>
-        <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="border:1px solid var(--border-strong); text-align:center; padding:14px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); display:block;" style-hover="color:var(--accent); border-color:var(--accent);">Included with app</a>
+        <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="border:1px solid var(--border-strong); text-align:center; padding:12px; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); display:block;">Included with app</a>
       </div>
 
-      <div style="border:1px solid var(--accent); padding:36px 32px; display:flex; flex-direction:column; position:relative; background:var(--panel);">
-        <div style="position:absolute; top:0; right:0; background:var(--accent); color:#171310; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:6px 12px;">Recommended</div>
-        <div style="font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;">Pro</div>
-        <div style="font-family:var(--font-d); font-weight:400; font-size:44px; text-transform:uppercase; margin-bottom:4px;">{{ proPrice }}</div>
-        <div style="font-size:12px; color:var(--muted); margin-bottom:24px;">One-time payment</div>
-        <div style="display:flex; flex-direction:column; gap:12px; font-size:14px; color:var(--fg); margin-bottom:32px; flex:1;">
+      <div style="border:1px solid var(--accent); padding:30px 24px; display:flex; flex-direction:column; position:relative; background:var(--panel); box-sizing:border-box;">
+        <div style="position:absolute; top:0; right:0; background:var(--accent); color:#171310; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:4px 10px;">Recommended</div>
+        <div style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">Pro</div>
+        <div style="font-family:var(--font-d); font-weight:400; font-size:40px; text-transform:uppercase; margin-bottom:2px;">{{ proPrice }}</div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:20px;">One-time payment</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px; color:var(--fg); margin-bottom:28px; flex:1;">
           <span>— Everything in Standard</span>
           <span>— Batch folder processing</span>
           <span>— WebP + AVIF export</span>
           <span>— Prefix / suffix &amp; compression control</span>
           <span>— Free updates</span>
         </div>
-        <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; text-align:center; padding:16px; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;" style-hover="background:transparent; color:var(--accent);">Get WMC Pro</a>
+        <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="background:var(--accent); border:1px solid var(--accent); color:#171310; text-align:center; padding:14px; font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; display:block;">Get WMC Pro</a>
       </div>
 
     </div>
   </section>
 
   <!-- CTA BAND -->
-  <section style="padding:clamp(56px,7vw,90px) clamp(20px,5vw,64px); max-width:1200px; margin:0 auto; text-align:center; border-bottom:1px solid var(--border);">
-    <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(26px,4vw,44px); line-height:1.05; margin:0 0 28px;">Stop losing visitors to load time.</h2>
-    <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="display:inline-block; background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:18px 36px;" style-hover="background:transparent; color:var(--accent);">Get WMC on Stripe</a>
-    <div style="font-size:12px; color:var(--muted); margin-top:16px; letter-spacing:0.05em;">{{ proPrice }} one-time · instant download</div>
+  <section style="padding:clamp(48px,6vw,90px) clamp(16px,4vw,64px); max-width:1200px; margin:0 auto; text-align:center; border-bottom:1px solid var(--border); box-sizing:border-box;">
+    <h2 style="font-family:var(--font-d); font-weight:400; text-transform:uppercase; font-size:clamp(24px,3.5vw,44px); line-height:1.05; margin:0 0 24px;">Stop losing visitors to load time.</h2>
+    <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="display:inline-block; background:var(--accent); border:1px solid var(--accent); color:#171310; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; font-size:14px; padding:16px 30px; text-align:center;">Get WMC on Stripe</a>
+    <div style="font-size:12px; color:var(--muted); margin-top:14px; letter-spacing:0.05em;">{{ proPrice }} one-time · instant download</div>
   </section>
 
   <!-- FOOTER -->
-  <footer style="padding:56px clamp(20px,5vw,64px) 40px; max-width:1360px; margin:0 auto; display:flex; flex-wrap:wrap; gap:40px; justify-content:space-between;">
+  <footer style="padding:48px clamp(16px,4vw,64px) 32px; max-width:1360px; margin:0 auto; display:flex; flex-wrap:wrap; gap:32px; justify-content:space-between; box-sizing:border-box;">
     <div style="max-width:280px;">
       <p style="font-size:13px; color:var(--muted); margin:0;">Tools for people who make things.</p>
     </div>
-    <div style="display:flex; gap:64px; flex-wrap:wrap;">
+    <div style="display:flex; gap:48px; flex-wrap:wrap;">
       <div>
-        <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Product</div>
-        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
-          <a href="#pricing" style="opacity:0.85;" style-hover="opacity:1;">Pricing</a>
-          <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="opacity:0.85;" style-hover="opacity:1;">Stripe</a>
+        <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:12px;">Product</div>
+        <div style="display:flex; flex-direction:column; gap:8px; font-size:14px;">
+          <a href="#pricing" style="opacity:0.85;">Pricing</a>
+          <a href="{{ stripeUrl }}" target="_blank" rel="noopener" style="opacity:0.85;">Stripe</a>
         </div>
       </div>
       <div>
-        <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Connect</div>
-        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
-          <a href="https://www.dpaul.studio" target="_blank" rel="noopener" style="opacity:0.85;" style-hover="opacity:1;">dpaul.studio</a>
+        <div style="font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:12px;">Connect</div>
+        <div style="display:flex; flex-direction:column; gap:8px; font-size:14px;">
+          <a href="https://www.dpaul.studio" target="_blank" rel="noopener" style="opacity:0.85;">dpaul.studio</a>
         </div>
       </div>
     </div>
   </footer>
-  <div style="padding:20px clamp(20px,5vw,64px) 40px; max-width:1360px; margin:0 auto; border-top:1px solid var(--border); font-size:12px; color:var(--muted);">© 2026 dPaul. All rights reserved.</div>
+  <div style="padding:16px clamp(16px,4vw,64px) 32px; max-width:1360px; margin:0 auto; border-top:1px solid var(--border); font-size:12px; color:var(--muted); box-sizing:border-box;">© 2026 dPaul. All rights reserved.</div>
 
     </div>
 </div>
@@ -221,8 +227,6 @@ a{color:inherit;text-decoration:none;}
     function tryPlay() {
       var v = getVideo();
       if (!v) return;
-      // Some browsers require muted to be set as a JS property, not
-      // just an HTML attribute, before autoplay is permitted
       v.muted = true;
       v.defaultMuted = true;
       if (v.paused) {
@@ -232,15 +236,10 @@ a{color:inherit;text-decoration:none;}
 
     tryPlay();
 
-    // Catch the first interaction of any kind, anywhere on the page —
-    // some embedded browsers gate ALL autoplay behind this
     ['click', 'touchstart', 'scroll', 'keydown'].forEach(function(evt) {
       document.addEventListener(evt, tryPlay, { passive: true });
     });
 
-    // Keep retrying for a while — if the page framework re-renders and
-    // replaces the video element after this script first ran, a single
-    // early attempt would be lost since it targeted the old, detached node
     var attempts = 0;
     var retryTimer = setInterval(function() {
       tryPlay();
@@ -248,8 +247,6 @@ a{color:inherit;text-decoration:none;}
       if (attempts > 15) clearInterval(retryTimer);
     }, 1000);
 
-    // Also retry whenever the video scrolls into view, re-checking for a
-    // fresh element reference each time in case it was swapped out
     if ('IntersectionObserver' in window) {
       var lastObserved = null;
       var attachTimer = setInterval(function() {
@@ -293,7 +290,6 @@ class Component extends DCLogic {
     };
   }
 }
-
 </script>
 </body>
 </html>
