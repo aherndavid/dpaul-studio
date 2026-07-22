@@ -57,10 +57,24 @@ textarea::placeholder { color: #999; }
 .clearlink { font-family: var(--font-mono); font-size: 0.7rem; color: #999; text-decoration: underline; cursor: pointer; background: none; border: none; padding: 0; margin-left: auto; }
 .clearlink:hover { color: var(--red); }
 
-.cta-row { display: flex; justify-content: center; margin: 2rem 0; }
+.cta-row { display: flex; justify-content: center; align-items: center; gap: 12px; margin: 2rem 0; }
 .cta { font-family: var(--font-cond); font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: var(--charcoal); color: var(--off-white); border: 1px solid var(--charcoal); padding: 0.85rem 2.5rem; cursor: pointer; transition: all 0.15s ease; }
 .cta:hover:not(:disabled) { background: transparent; color: var(--charcoal); }
 .cta:disabled { opacity: 0.3; cursor: not-allowed; }
+.log-toggle-btn { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; background: transparent; color: #999; border: 1px solid #ccc; padding: 0.5rem 0.75rem; cursor: pointer; transition: all 0.15s ease; }
+.log-toggle-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
+.log-toggle-btn.active { border-color: var(--charcoal); color: var(--charcoal); background: #eee; }
+
+.log-panel { display: none; border: 1px solid var(--charcoal); margin-bottom: 1.25rem; }
+.log-panel.open { display: block; }
+.log-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border-bottom: 1px dotted #ccc; }
+.log-content { max-height: 220px; overflow-y: auto; padding: 0.75rem 1rem; }
+.log-entry { font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.6; color: #555; word-break: break-word; white-space: pre-wrap; padding: 3px 0; border-bottom: 1px dotted #eee; }
+.log-entry:last-child { border-bottom: none; }
+.log-entry .ts { color: #aaa; margin-right: 6px; }
+.log-entry.err { color: var(--red); }
+.log-entry.ok { color: #6a6a6a; }
+.log-empty { font-family: var(--font-mono); font-size: 0.75rem; color: #bbb; text-align: center; padding: 1rem 0; }
 
 .error { font-family: var(--font-mono); font-size: 0.78rem; color: var(--red); border: 1px solid var(--red); padding: 0.65rem 0.8rem; margin-bottom: 1rem; display: none; }
 
@@ -156,6 +170,18 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
 
   <div class="cta-row">
     <button class="cta" id="analyzeBtn">Check the fit</button>
+    <button class="log-toggle-btn" id="logToggleBtn" title="Show log">Log</button>
+  </div>
+
+  <div class="log-panel" id="logPanel">
+    <div class="log-panel-head">
+      <span class="section-label" style="margin:0;">Log</span>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button class="clearlink" id="copyLogBtn">copy</button>
+        <button class="clearlink" id="clearLogBtn">clear</button>
+      </div>
+    </div>
+    <div class="log-content" id="logContent"></div>
   </div>
 
   <div class="loading" id="loadingBox">
@@ -299,32 +325,78 @@ function wireFileUpload(inputId, targetTextarea, filenameId){
     if(!file) return;
     const nameEl = document.getElementById(filenameId);
     const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+    log('file selected (' + inputId + '): ' + file.name + ' — ' + (isPdf ? 'PDF' : 'text') + ', ' + file.size + ' bytes');
     try{
       if (isPdf) {
         nameEl.textContent = file.name + ' — reading…';
         const text = await extractPdfText(file);
         if (!text.trim()) {
           nameEl.textContent = file.name + ' — no extractable text (scanned PDF?)';
+          log('PDF extraction returned no text for ' + file.name, 'err');
           return;
         }
         targetTextarea.value = text.trim();
         nameEl.textContent = file.name;
+        log('PDF extraction OK: ' + text.trim().length + ' chars extracted', 'ok');
       } else {
         const text = await file.text();
         targetTextarea.value = text;
         nameEl.textContent = file.name;
+        log('text file read OK: ' + text.length + ' chars', 'ok');
       }
       targetTextarea.dispatchEvent(new Event('input'));
     }catch(err){
       console.error(err);
       nameEl.textContent = file.name + ' — could not read this file';
+      log('file read failed for ' + file.name + ': ' + err.message, 'err');
     }
   });
 }
 wireFileUpload('cvFile', cvText, 'cvFileName');
 wireFileUpload('jobFile', jobText, 'jobFileName');
 
-function showError(msg){
+// --- log panel ---
+const logContent = document.getElementById('logContent');
+const logPanel = document.getElementById('logPanel');
+const logToggleBtn = document.getElementById('logToggleBtn');
+let logEntries = [];
+
+function renderLog(){
+  if (!logEntries.length) {
+    logContent.innerHTML = '<div class="log-empty">Nothing logged yet — run a check to see activity here.</div>';
+    return;
+  }
+  logContent.innerHTML = logEntries.map(e => {
+    const cls = e.type === 'err' ? 'err' : e.type === 'ok' ? 'ok' : '';
+    return `<div class="log-entry ${cls}"><span class="ts">${e.time}</span>${escapeHtml(e.text)}</div>`;
+  }).join('');
+  logContent.scrollTop = logContent.scrollHeight;
+}
+function log(text, type){
+  const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+  logEntries.push({ time, text, type: type || 'info' });
+  renderLog();
+}
+renderLog();
+
+logToggleBtn.addEventListener('click', ()=>{
+  logPanel.classList.toggle('open');
+  logToggleBtn.classList.toggle('active');
+});
+document.getElementById('clearLogBtn').addEventListener('click', ()=>{
+  logEntries = [];
+  renderLog();
+});
+document.getElementById('copyLogBtn').addEventListener('click', async ()=>{
+  const text = logEntries.map(e => '[' + e.time + '] ' + e.text).join('\n');
+  try{
+    await navigator.clipboard.writeText(text || '(log is empty)');
+    const btn = document.getElementById('copyLogBtn');
+    const orig = btn.textContent;
+    btn.textContent = 'copied';
+    setTimeout(()=>{ btn.textContent = orig; }, 1200);
+  }catch(e){ /* clipboard unavailable, ignore */ }
+});
   errorBox.textContent = msg;
   errorBox.style.display = 'block';
 }
@@ -346,6 +418,9 @@ analyzeBtn.addEventListener('click', async ()=>{
     msgIdx = (msgIdx+1) % loadingMessages.length;
     loadingMsg.textContent = loadingMessages[msgIdx];
   }, 1800);
+
+  log('--- check started: CV ' + cv.length + ' chars, job posting ' + job.length + ' chars ---');
+  log('online status: ' + (navigator.onLine === false ? 'browser reports OFFLINE' : 'online'));
 
   const systemPrompt = `You are a blunt, accuracy-first career assessor. Your job is to compare a candidate's CV against a specific job posting and give an honest percentage match — never inflated, never softened for politeness. You actively distrust impressive-sounding job titles or company brand names and instead read the actual listed requirements and responsibilities.
 
@@ -372,26 +447,38 @@ Include 3-5 categories covering things like: required/basic qualifications, rele
   const userPrompt = `CANDIDATE CV:\n"""\n${cv}\n"""\n\nJOB POSTING:\n"""\n${job}\n"""`;
 
   try{
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 2500,
-        system: systemPrompt,
-        messages: [{ role: "user", content: userPrompt }]
-      })
-    });
+    log('sending request to api.anthropic.com/v1/messages …');
+    let response;
+    try {
+      response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 2500,
+          system: systemPrompt,
+          messages: [{ role: "user", content: userPrompt }]
+        })
+      });
+    } catch (networkErr) {
+      log('fetch threw before a response was received: ' + networkErr.name + ' — ' + networkErr.message, 'err');
+      throw new Error('Failed to fetch: the request never reached the server. This is usually a connectivity issue, a browser extension (ad blocker/privacy blocker) interfering, or the page losing network access — not a problem with your CV or the job text. Check the Log panel for details, check your connection, and try again.');
+    }
+
+    log('response received: HTTP ' + response.status + (response.ok ? ' OK' : ' — not OK'));
     const data = await response.json();
 
     if (data.error) {
+      log('API returned an error object: ' + (data.error.message || JSON.stringify(data.error)), 'err');
       throw new Error('API error: ' + (data.error.message || JSON.stringify(data.error)));
     }
     if (!response.ok) {
+      log('non-OK status with no error object: ' + JSON.stringify(data).slice(0, 300), 'err');
       throw new Error('Request failed (status ' + response.status + ')');
     }
 
     const textBlocks = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+    log('response text length: ' + textBlocks.length + ' chars, stop_reason: ' + (data.stop_reason || 'n/a'));
     if (!textBlocks.trim()) {
       throw new Error('Empty response from model' + (data.stop_reason ? ' (stop_reason: ' + data.stop_reason + ')' : ''));
     }
@@ -408,13 +495,18 @@ Include 3-5 categories covering things like: required/basic qualifications, rele
     try {
       parsed = JSON.parse(clean);
     } catch (parseErr) {
-      console.error('Raw model output that failed to parse:', textBlocks);
+      log('JSON.parse failed: ' + parseErr.message, 'err');
+      log('raw text (first 400 chars): ' + textBlocks.slice(0, 400), 'err');
       throw new Error('Could not parse the model\'s response as JSON: ' + parseErr.message);
     }
+    log('parsed OK — overall match ' + parsed.overall_percentage + '%', 'ok');
     renderResults(parsed);
   }catch(err){
     console.error(err);
+    log('check failed: ' + (err && err.message ? err.message : String(err)), 'err');
     showError(err && err.message ? err.message : 'Something went wrong. Try again.');
+    logPanel.classList.add('open');
+    logToggleBtn.classList.add('active');
   }finally{
     clearInterval(msgInterval);
     loadingBox.style.display = 'none';
