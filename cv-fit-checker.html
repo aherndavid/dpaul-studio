@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CV Fit Checker — dPaul.studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 :root {
   --charcoal: #131413;
@@ -125,7 +126,7 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
     </div>
   </div>
 
-  <p class="intro">Paste your CV once — it's remembered on this device. Paste any job posting and get a plain-spoken match assessment, not a hype job.</p>
+  <p class="intro">Paste or upload your CV once — it's remembered on this device. Paste or upload any job posting and get a plain-spoken match assessment, not a hype job. PDF, .txt and .md files all work.</p>
 
   <div class="panel">
     <div class="panel-head">
@@ -134,7 +135,7 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
     </div>
     <textarea id="cvText" placeholder="Paste your CV text here, or upload a .txt/.md file below."></textarea>
     <div class="row-actions">
-      <label class="filebtn">Upload .txt / .md<input type="file" id="cvFile" accept=".txt,.md" style="display:none;"></label>
+      <label class="filebtn">Upload .pdf / .txt / .md<input type="file" id="cvFile" accept=".txt,.md,.pdf" style="display:none;"></label>
       <span class="filename" id="cvFileName"></span>
       <button class="clearlink" id="clearCv">clear saved CV</button>
     </div>
@@ -146,7 +147,7 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
     </div>
     <textarea id="jobText" placeholder="Paste the full job description here — the more complete, the better the read."></textarea>
     <div class="row-actions">
-      <label class="filebtn">Upload .txt / .md<input type="file" id="jobFile" accept=".txt,.md" style="display:none;"></label>
+      <label class="filebtn">Upload .pdf / .txt / .md<input type="file" id="jobFile" accept=".txt,.md,.pdf" style="display:none;"></label>
       <span class="filename" id="jobFileName"></span>
     </div>
   </div>
@@ -261,14 +262,49 @@ document.getElementById('clearCv').addEventListener('click', async ()=>{
   try{ await window.storage.delete('user-cv', false); }catch(e){}
 });
 
+if (window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+async function extractPdfText(file){
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let out = [];
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const pageText = content.items.map(it => it.str).join(' ');
+    out.push(pageText);
+  }
+  return out.join('\n\n');
+}
+
 function wireFileUpload(inputId, targetTextarea, filenameId){
   document.getElementById(inputId).addEventListener('change', async (e)=>{
     const file = e.target.files[0];
     if(!file) return;
-    document.getElementById(filenameId).textContent = file.name;
-    const text = await file.text();
-    targetTextarea.value = text;
-    targetTextarea.dispatchEvent(new Event('input'));
+    const nameEl = document.getElementById(filenameId);
+    const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+    try{
+      if (isPdf) {
+        nameEl.textContent = file.name + ' — reading…';
+        const text = await extractPdfText(file);
+        if (!text.trim()) {
+          nameEl.textContent = file.name + ' — no extractable text (scanned PDF?)';
+          return;
+        }
+        targetTextarea.value = text.trim();
+        nameEl.textContent = file.name;
+      } else {
+        const text = await file.text();
+        targetTextarea.value = text;
+        nameEl.textContent = file.name;
+      }
+      targetTextarea.dispatchEvent(new Event('input'));
+    }catch(err){
+      console.error(err);
+      nameEl.textContent = file.name + ' — could not read this file';
+    }
   });
 }
 wireFileUpload('cvFile', cvText, 'cvFileName');
