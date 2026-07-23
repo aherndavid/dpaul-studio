@@ -82,6 +82,7 @@ body { font-family: var(--font-sans); min-height: 100vh; }
 
 @media print {
   .no-print, .cta-row, .log-toggle-btn, .log-panel, #keyInfoBox, .panel:has(#apiKey), .panel:has(#cvText), .panel:has(#jobText), footer, .intro { display: none !important; }
+  .splash-overlay, .result-popup-overlay { display: none !important; }
   body { background: #fff; }
   .panel { border: 1px solid #000; break-inside: avoid; }
 }
@@ -162,6 +163,14 @@ ul.plain li:first-child { border-top: none; padding-top: 0; }
 .splash-card .loading-eq { justify-content: center; }
 .splash-msg { font-family: var(--font-cond); font-size: 1.25rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin: 1.1rem 0 0.8rem; }
 .splash-tip { font-size: 0.9rem; color: #555; line-height: 1.5; min-height: 2.8em; }
+
+.result-popup-overlay { position: fixed; inset: 0; background: rgba(19,20,19,0.72); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1.5rem; }
+.result-popup-overlay.open { display: flex; }
+.result-popup-card { position: relative; background: var(--off-white); border: 2px solid var(--charcoal); padding: 2.6rem 2.2rem 2.2rem; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 8px 0 rgba(0,0,0,0.15); }
+.popup-close { position: absolute; top: 10px; right: 12px; background: none; border: none; font-size: 1.6rem; line-height: 1; cursor: pointer; color: #999; }
+.popup-close:hover { color: var(--charcoal); }
+.popup-pct { font-family: var(--font-cond); font-size: 3.2rem; font-weight: 700; line-height: 1; margin-bottom: 0.6rem; }
+.popup-verdict { font-size: 0.9rem; line-height: 1.5; color: #444; margin: 0.8rem 0 1.4rem; }
 .loading-eq { display: flex; align-items: flex-end; justify-content: center; gap: 4px; height: 28px; margin-bottom: 1rem; }
 .loading-eq .eq-bar { width: 4px; }
 .loading .msg { font-family: var(--font-mono); font-size: 0.78rem; color: #777; letter-spacing: 0.03em; text-transform: uppercase; }
@@ -273,6 +282,16 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
       </div>
       <p class="splash-msg" id="splashMsg">Working on it…</p>
       <p class="splash-tip" id="splashTip"></p>
+    </div>
+  </div>
+
+  <div class="result-popup-overlay" id="resultPopupOverlay">
+    <div class="result-popup-card">
+      <button class="popup-close" id="popupCloseBtn" type="button" aria-label="Close">&times;</button>
+      <div class="popup-pct" id="popupPct">0%</div>
+      <span class="verdict-tag" id="popupVerdictTag">—</span>
+      <p class="popup-verdict" id="popupVerdictBody"></p>
+      <button class="cta" id="popupViewBtn" type="button" style="padding:0.75rem 2.2rem; font-size:0.95rem;">View full report</button>
     </div>
   </div>
 
@@ -404,7 +423,7 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
 
   <footer>
     <a href="https://dpaul-software.uk" target="_blank" rel="noopener">dpaul-software.uk</a>
-    <span class="version-tag">v1.6</span>
+    <span class="version-tag">v1.7</span>
   </footer>
 
 </div>
@@ -456,6 +475,29 @@ function hideSplash(){
   clearInterval(splashInterval);
   document.getElementById('splashOverlay').classList.remove('open');
 }
+
+function showResultPopup(data){
+  const pct = Math.max(0, Math.min(100, Math.round(data.overall_percentage)));
+  document.getElementById('popupPct').textContent = pct + '%';
+  const tag = document.getElementById('popupVerdictTag');
+  tag.textContent = data.recommendation === 'apply' ? 'Worth applying'
+    : data.recommendation === 'stretch' ? 'A stretch'
+    : 'Skip this one';
+  tag.className = 'verdict-tag ' + (data.recommendation || 'stretch');
+  document.getElementById('popupVerdictBody').textContent = data.verdict || '';
+  document.getElementById('resultPopupOverlay').classList.add('open');
+}
+function hideResultPopup(){
+  document.getElementById('resultPopupOverlay').classList.remove('open');
+}
+document.getElementById('popupCloseBtn').addEventListener('click', hideResultPopup);
+document.getElementById('popupViewBtn').addEventListener('click', ()=>{
+  hideResultPopup();
+  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+document.getElementById('resultPopupOverlay').addEventListener('click', (e)=>{
+  if(e.target.id === 'resultPopupOverlay') hideResultPopup();
+});
 
 // --- API key: stored in localStorage (this file runs standalone, outside the artifact sandbox) ---
 const apiKeyEl = document.getElementById('apiKey');
@@ -875,6 +917,7 @@ EXCLUDE anything that isn't really asking "do you have this skill" — including
     lastCheck = { cv, job, data: parsed };
     renderResults(parsed);
     renderGapQuestions(parsed.skill_gap_questions);
+    showResultPopup(parsed);
   }catch(err){
     console.error(err);
     log('check failed: ' + (err && err.message ? err.message : String(err)), 'err');
