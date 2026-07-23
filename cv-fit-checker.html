@@ -453,7 +453,7 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
 
   <footer>
     <a href="https://dpaul-software.uk" target="_blank" rel="noopener">dpaul-software.uk</a>
-    <span class="version-tag">v2.0</span>
+    <span class="version-tag">v2.1</span>
   </footer>
 
 </div>
@@ -1012,7 +1012,7 @@ EXCLUDE anything that isn't really asking "do you have this skill" — including
   const userPrompt = `CANDIDATE CV:\n"""\n${cv}\n"""\n\nJOB POSTING:\n"""\n${job}\n"""`;
 
   try{
-    const parsed = await callClaudeJSON(apiKey, systemPrompt, userPrompt, 2500);
+    const parsed = await callClaudeJSON(apiKey, systemPrompt, userPrompt, 4000);
     log('parsed OK — overall match ' + parsed.overall_percentage + '%', 'ok');
     parsed.skill_gap_questions = filterSkillGapQuestions(parsed.skill_gap_questions || []);
     lastCheck = { cv, job, data: parsed };
