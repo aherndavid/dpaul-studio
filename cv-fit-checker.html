@@ -75,7 +75,7 @@ body { font-family: var(--font-sans); min-height: 100vh; }
 .cv-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 0.6rem; }
 @media (max-width: 640px) { .cv-compare { grid-template-columns: 1fr; } }
 .cv-compare-label { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: #666; margin: 0 0 0.4rem; }
-.cv-box { max-height: 420px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.5; border: 1px solid #ccc; padding: 0.9rem; background: #fafafa; margin: 0; }
+.cv-box { max-height: 420px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; line-height: 1.5; border: 1px solid #ccc; padding: 0.9rem; background: #fafafa; margin: 0; }
 .diff-add { background: #d7f0dc; text-decoration: none; }
 .diff-remove { background: #f8d7d7; text-decoration: line-through; color: #a33; }
 @media print { .cv-compare { grid-template-columns: 1fr; } .cv-box { max-height: none; } }
@@ -252,6 +252,7 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
     <div class="row-actions">
       <label class="filebtn">Upload .pdf / .txt / .md<input type="file" id="jobFile" accept=".txt,.md,.pdf" style="display:none;"></label>
       <span class="filename" id="jobFileName"></span>
+      <button class="clearlink" id="clearJobBtn" type="button">clear text box</button>
     </div>
   </div>
 
@@ -453,7 +454,7 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
 
   <footer>
     <a href="https://dpaul-software.uk" target="_blank" rel="noopener">dpaul-software.uk</a>
-    <span class="version-tag">v2.1</span>
+    <span class="version-tag">v2.3</span>
   </footer>
 
 </div>
@@ -786,6 +787,11 @@ deleteCvBtn.addEventListener('click', ()=>{
 
 document.getElementById('clearCv').addEventListener('click', ()=>{
   cvText.value = '';
+});
+
+document.getElementById('clearJobBtn').addEventListener('click', ()=>{
+  jobText.value = '';
+  document.getElementById('jobFileName').textContent = '';
 });
 
 if (window.pdfjsLib) {
@@ -1300,10 +1306,61 @@ document.getElementById('copyRefinedBtn').addEventListener('click', async ()=>{
   }
 });
 
+const CV_HEADING_WORDS = [
+  'summary','profile','professional profile','personal profile','objective','career objective',
+  'skills','core skills','key skills','technical skills','core competencies','soft skills',
+  'experience','professional experience','work experience','employment history','career history',
+  'earlier roles','relevant experience',
+  'education','qualifications','certifications','training','education & training',
+  'projects','achievements','selected achievements','key achievements','notable achievements',
+  'interests','hobbies','references','languages','publications','awards',
+  'volunteer','volunteering','professional attributes','contact','availability',
+  'tools','tools & technologies','tools and technologies', 'summary of qualifications'
+];
+
+function isLikelyCvHeading(line){
+  const trimmed = line.trim().replace(/:$/, '');
+  if(!trimmed || trimmed.length > 45) return false;
+  const lower = trimmed.toLowerCase();
+  if(CV_HEADING_WORDS.includes(lower)) return true;
+  // short, all-caps line (allow letters, numbers, &, /, spaces, hyphens) — a classic CV section header style
+  if(/^[A-Z][A-Z0-9 &/\-]*$/.test(trimmed) && /[A-Z]/.test(trimmed) && trimmed.split(' ').length <= 6) return true;
+  return false;
+}
+
+// Turns plain CV text into styled Word-ready HTML: larger bold name at top,
+// bold uppercase subtitles with a thin rule above each section, Courier New throughout.
+function buildStyledCvHtml(cvText){
+  const lines = cvText.split('\n');
+  let firstContentIdx = -1;
+  for(let i=0; i<lines.length; i++){ if(lines[i].trim()){ firstContentIdx = i; break; } }
+
+  let html = '';
+  lines.forEach((rawLine, idx)=>{
+    const trimmed = rawLine.trim();
+
+    if(idx === firstContentIdx && trimmed){
+      html += '<p style="font-size:18pt; font-weight:bold; margin:0 0 4pt;">' + escapeHtml(trimmed) + '</p>';
+      return;
+    }
+    if(!trimmed){
+      html += '<p style="margin:0 0 6pt; font-size:11pt;">&nbsp;</p>';
+      return;
+    }
+    if(isLikelyCvHeading(trimmed)){
+      html += '<hr style="border:none; border-top:1px solid #444; margin:16pt 0 5pt;">';
+      html += '<p style="font-size:13pt; font-weight:bold; text-transform:uppercase; letter-spacing:0.5pt; margin:0 0 6pt;">' + escapeHtml(trimmed) + '</p>';
+      return;
+    }
+    html += '<p style="font-size:11pt; margin:0 0 4pt;">' + escapeHtml(trimmed) + '</p>';
+  });
+
+  return '<div style="font-family: \'Courier New\', Courier, monospace; color:#000;">' + html + '</div>';
+}
+
 document.getElementById('downloadRefinedBtn').addEventListener('click', ()=>{
   if(!lastRefinedCv){ return; }
-  const htmlBody = '<pre style="font-family: Calibri, sans-serif; white-space: pre-wrap; font-size: 11pt;">' + escapeHtml(lastRefinedCv) + '</pre>';
-  downloadAsWord('Refined-CV.doc', htmlBody);
+  downloadAsWord('Refined-CV.doc', buildStyledCvHtml(lastRefinedCv));
 });
 
 function downloadAsWord(filename, htmlContent){
