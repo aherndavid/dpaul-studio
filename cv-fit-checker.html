@@ -53,6 +53,33 @@ body { font-family: var(--font-sans); min-height: 100vh; }
 .info-box a { color: var(--charcoal); }
 .info-box code { font-family: var(--font-mono); background: #eee; padding: 1px 4px; }
 
+/* ── Gap questions ── */
+.gap-q { padding: 0.9rem 0; border-bottom: 1px dotted #ccc; }
+.gap-q:last-child { border-bottom: none; }
+.gap-q p { margin: 0 0 0.6rem; font-size: 0.9rem; line-height: 1.4; }
+.pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.03em; text-transform: uppercase; background: transparent; border: 1px solid var(--charcoal); color: var(--charcoal); padding: 0.4rem 0.9rem; cursor: pointer; transition: all 0.15s ease; }
+.pill:hover { background: #eee; }
+.pill.selected { background: var(--charcoal); color: var(--off-white); }
+.pill.selected.pill-yes { background: #2e9e4c; border-color: #2e9e4c; }
+.pill.selected.pill-some { background: #b8860b; border-color: #b8860b; }
+.pill.selected.pill-no { background: var(--red); border-color: var(--red); }
+
+/* ── Before/after compare bars ── */
+.compare-bars { margin-top: 0.5rem; }
+.compare-row { display: flex; align-items: center; gap: 12px; margin-bottom: 0.9rem; }
+.compare-label { width: 110px; flex-shrink: 0; font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: #666; }
+.compare-pct { width: 44px; flex-shrink: 0; text-align: right; font-family: var(--font-mono); font-weight: 700; font-size: 0.85rem; }
+
+/* ── CV diff compare ── */
+.cv-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 0.6rem; }
+@media (max-width: 640px) { .cv-compare { grid-template-columns: 1fr; } }
+.cv-compare-label { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: #666; margin: 0 0 0.4rem; }
+.cv-box { max-height: 420px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.5; border: 1px solid #ccc; padding: 0.9rem; background: #fafafa; margin: 0; }
+.diff-add { background: #d7f0dc; text-decoration: none; }
+.diff-remove { background: #f8d7d7; text-decoration: line-through; color: #a33; }
+@media print { .cv-compare { grid-template-columns: 1fr; } .cv-box { max-height: none; } }
+
 @media print {
   .no-print, .cta-row, .log-toggle-btn, .log-panel, #keyInfoBox, .panel:has(#apiKey), .panel:has(#cvText), .panel:has(#jobText), footer, .intro { display: none !important; }
   body { background: #fff; }
@@ -274,6 +301,58 @@ footer a:hover { color: var(--charcoal); text-decoration: underline; }
       <ul class="plain" id="suggestionsList"></ul>
     </div>
 
+    <div class="panel" id="refinePanel" style="display:none;">
+      <div class="panel-head">
+        <div class="section-label"><span class="n">?</span> Not sure if you have some of this?</div>
+      </div>
+      <p class="intro" style="margin-bottom:1rem;">Answer honestly for each gap below and Clever CV Checker will rebuild your CV around what you actually have, then re-score your chances.</p>
+      <div id="gapQuestions"></div>
+      <div class="cta-row no-print" style="margin:1.5rem 0 0.5rem;">
+        <button class="cta" id="refineBtn" type="button" style="padding:0.75rem 2rem; font-size:0.95rem;">Refine my CV &amp; re-score</button>
+      </div>
+    </div>
+
+    <div class="panel" id="refineResults" style="display:none;">
+      <div class="panel-head">
+        <div class="section-label"><span class="n">✓</span> Refined match</div>
+      </div>
+      <span class="verdict-tag" id="refineVerdictTag">—</span>
+      <p id="refineVerdictBody" class="verdict-body"></p>
+
+      <div class="compare-bars">
+        <div class="compare-row">
+          <span class="compare-label">Original match</span>
+          <div class="bar-track"><div class="bar-fill" id="origBar" style="width:0%; background:#999;"></div></div>
+          <span class="compare-pct" id="origPct">0%</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-label">Refined match</span>
+          <div class="bar-track"><div class="bar-fill" id="refinedBar" style="width:0%;"></div></div>
+          <span class="compare-pct" id="refinedPct">0%</span>
+        </div>
+      </div>
+
+      <p class="list-title" style="margin-top:1.5rem;">What changed</p>
+      <ul class="plain" id="changesList"></ul>
+
+      <p class="list-title" style="margin-top:1.5rem;">Original CV vs. refined CV</p>
+      <div class="cv-compare">
+        <div>
+          <p class="cv-compare-label">Original</p>
+          <pre class="cv-box" id="origCvBox"></pre>
+        </div>
+        <div>
+          <p class="cv-compare-label">Refined <span style="font-weight:400; color:#777;">(green = added/changed)</span></p>
+          <pre class="cv-box" id="refinedCvBox"></pre>
+        </div>
+      </div>
+
+      <div class="cta-row no-print" style="margin-top:1.5rem;">
+        <button class="cta" id="copyRefinedBtn" type="button" style="padding:0.75rem 2rem; font-size:0.95rem;">Copy refined CV</button>
+        <button class="cta" id="downloadRefinedBtn" type="button" style="padding:0.75rem 2rem; font-size:0.95rem; background:transparent; color:var(--charcoal); border:1px solid var(--charcoal);">Download as Word</button>
+      </div>
+    </div>
+
     <div class="cta-row no-print">
       <button class="cta" id="printBtn" type="button">Print this report</button>
       <button class="cta" id="newRoleBtn" type="button" style="background:transparent; color:var(--charcoal); border:1px solid var(--charcoal);">Check another role</button>
@@ -350,6 +429,8 @@ document.getElementById('newRoleBtn').addEventListener('click', ()=>{
   jobText.value = '';
   document.getElementById('jobFileName').textContent = '';
   results.style.display = 'none';
+  document.getElementById('refinePanel').style.display = 'none';
+  document.getElementById('refineResults').style.display = 'none';
   hideError();
   log('--- cleared job posting to check another role (CV kept) ---');
   jobText.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -619,6 +700,68 @@ function showError(msg){
 }
 function hideError(){ errorBox.style.display = 'none'; }
 
+let lastCheck = null; // { cv, job, data } from the most recent successful check
+
+async function callClaudeJSON(apiKey, systemPrompt, userPrompt, maxTokens){
+  log('sending request to api.anthropic.com/v1/messages …');
+  let response;
+  try {
+    response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-5",
+        max_tokens: maxTokens || 2500,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userPrompt }]
+      })
+    });
+  } catch (networkErr) {
+    log('fetch threw before a response was received: ' + networkErr.name + ' — ' + networkErr.message, 'err');
+    throw new Error('Failed to fetch: the request never reached the server. This is usually a connectivity issue, a browser extension (ad blocker/privacy blocker) interfering, or the page losing network access — not a problem with your CV or the job text. Check the Log panel for details, check your connection, and try again.');
+  }
+
+  log('response received: HTTP ' + response.status + (response.ok ? ' OK' : ' — not OK'));
+  const data = await response.json();
+
+  if (data.error) {
+    log('API returned an error object: ' + (data.error.message || JSON.stringify(data.error)), 'err');
+    throw new Error('API error: ' + (data.error.message || JSON.stringify(data.error)));
+  }
+  if (!response.ok) {
+    log('non-OK status with no error object: ' + JSON.stringify(data).slice(0, 300), 'err');
+    throw new Error('Request failed (status ' + response.status + ')');
+  }
+
+  const textBlocks = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+  log('response text length: ' + textBlocks.length + ' chars, stop_reason: ' + (data.stop_reason || 'n/a'));
+  if (!textBlocks.trim()) {
+    throw new Error('Empty response from model' + (data.stop_reason ? ' (stop_reason: ' + data.stop_reason + ')' : ''));
+  }
+
+  let clean = textBlocks.replace(/```json/gi, '').replace(/```/g, '').trim();
+  const firstBrace = clean.indexOf('{');
+  const lastBrace = clean.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+    clean = clean.slice(firstBrace, lastBrace + 1);
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(clean);
+  } catch (parseErr) {
+    log('JSON.parse failed: ' + parseErr.message, 'err');
+    log('raw text (first 400 chars): ' + textBlocks.slice(0, 400), 'err');
+    throw new Error('Could not parse the model\'s response as JSON: ' + parseErr.message);
+  }
+  return parsed;
+}
+
 analyzeBtn.addEventListener('click', async ()=>{
   hideError();
   const cv = cvText.value.trim();
@@ -630,6 +773,7 @@ analyzeBtn.addEventListener('click', async ()=>{
 
   analyzeBtn.disabled = true;
   results.style.display = 'none';
+  document.getElementById('refineResults').style.display = 'none';
   loadingBox.style.display = 'block';
   let msgIdx = 0;
   loadingMsg.textContent = loadingMessages[0];
@@ -667,65 +811,11 @@ Include 3-5 categories covering things like: required/basic qualifications, rele
   const userPrompt = `CANDIDATE CV:\n"""\n${cv}\n"""\n\nJOB POSTING:\n"""\n${job}\n"""`;
 
   try{
-    log('sending request to api.anthropic.com/v1/messages …');
-    let response;
-    try {
-      response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true"
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-5",
-          max_tokens: 2500,
-          system: systemPrompt,
-          messages: [{ role: "user", content: userPrompt }]
-        })
-      });
-    } catch (networkErr) {
-      log('fetch threw before a response was received: ' + networkErr.name + ' — ' + networkErr.message, 'err');
-      throw new Error('Failed to fetch: the request never reached the server. This is usually a connectivity issue, a browser extension (ad blocker/privacy blocker) interfering, or the page losing network access — not a problem with your CV or the job text. Check the Log panel for details, check your connection, and try again.');
-    }
-
-    log('response received: HTTP ' + response.status + (response.ok ? ' OK' : ' — not OK'));
-    const data = await response.json();
-
-    if (data.error) {
-      log('API returned an error object: ' + (data.error.message || JSON.stringify(data.error)), 'err');
-      throw new Error('API error: ' + (data.error.message || JSON.stringify(data.error)));
-    }
-    if (!response.ok) {
-      log('non-OK status with no error object: ' + JSON.stringify(data).slice(0, 300), 'err');
-      throw new Error('Request failed (status ' + response.status + ')');
-    }
-
-    const textBlocks = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
-    log('response text length: ' + textBlocks.length + ' chars, stop_reason: ' + (data.stop_reason || 'n/a'));
-    if (!textBlocks.trim()) {
-      throw new Error('Empty response from model' + (data.stop_reason ? ' (stop_reason: ' + data.stop_reason + ')' : ''));
-    }
-
-    let clean = textBlocks.replace(/```json/gi, '').replace(/```/g, '').trim();
-    // If the model added any preamble/postamble text, isolate the outermost {...} block
-    const firstBrace = clean.indexOf('{');
-    const lastBrace = clean.lastIndexOf('}');
-    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-      clean = clean.slice(firstBrace, lastBrace + 1);
-    }
-
-    let parsed;
-    try {
-      parsed = JSON.parse(clean);
-    } catch (parseErr) {
-      log('JSON.parse failed: ' + parseErr.message, 'err');
-      log('raw text (first 400 chars): ' + textBlocks.slice(0, 400), 'err');
-      throw new Error('Could not parse the model\'s response as JSON: ' + parseErr.message);
-    }
+    const parsed = await callClaudeJSON(apiKey, systemPrompt, userPrompt, 2500);
     log('parsed OK — overall match ' + parsed.overall_percentage + '%', 'ok');
+    lastCheck = { cv, job, data: parsed };
     renderResults(parsed);
+    renderGapQuestions(parsed.gaps || []);
   }catch(err){
     console.error(err);
     log('check failed: ' + (err && err.message ? err.message : String(err)), 'err');
@@ -800,6 +890,214 @@ function renderResults(data){
 
   results.style.display = 'block';
   results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// --- gap questions: yes / some / no per gap, then rebuild + re-score ---
+let gapAnswers = {};
+let lastRefinedCv = '';
+
+function renderGapQuestions(gaps){
+  const panel = document.getElementById('refinePanel');
+  const container = document.getElementById('gapQuestions');
+  container.innerHTML = '';
+  gapAnswers = {};
+  document.getElementById('refineResults').style.display = 'none';
+  if(!gaps || !gaps.length){ panel.style.display = 'none'; return; }
+
+  gaps.forEach((gap, idx)=>{
+    const row = document.createElement('div');
+    row.className = 'gap-q';
+    row.innerHTML = `
+      <p>${escapeHtml(gap)}</p>
+      <div class="pill-row" data-idx="${idx}">
+        <button type="button" class="pill pill-yes" data-answer="yes">Yes</button>
+        <button type="button" class="pill pill-some" data-answer="some">Some experience</button>
+        <button type="button" class="pill pill-no" data-answer="no">No</button>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+
+  container.querySelectorAll('.pill').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const row = btn.closest('.pill-row');
+      const idx = row.getAttribute('data-idx');
+      row.querySelectorAll('.pill').forEach(p=>p.classList.remove('selected'));
+      btn.classList.add('selected');
+      gapAnswers[idx] = btn.getAttribute('data-answer');
+    });
+  });
+
+  panel.style.display = 'block';
+}
+
+// simple word-level LCS diff — returns the revised text as ordered segments,
+// each flagged as newly-added or unchanged (matches the original)
+function wordDiffHighlight(oldText, newText){
+  const oldTokens = oldText.split(/(\s+)/);
+  const newTokens = newText.split(/(\s+)/);
+  const m = oldTokens.length, n = newTokens.length;
+
+  const dp = new Array(m+1);
+  for(let i=0;i<=m;i++) dp[i] = new Uint16Array(n+1);
+  for(let i=m-1;i>=0;i--){
+    for(let j=n-1;j>=0;j--){
+      dp[i][j] = (oldTokens[i] === newTokens[j]) ? (dp[i+1][j+1] + 1) : Math.max(dp[i+1][j], dp[i][j+1]);
+    }
+  }
+
+  let i=0, j=0;
+  const parts = [];
+  while(i<m && j<n){
+    if(oldTokens[i] === newTokens[j]){
+      parts.push({add:false, text:newTokens[j]});
+      i++; j++;
+    } else if(dp[i+1][j] >= dp[i][j+1]){
+      i++;
+    } else {
+      parts.push({add:true, text:newTokens[j]});
+      j++;
+    }
+  }
+  while(j<n){ parts.push({add:true, text:newTokens[j]}); j++; }
+  return parts;
+}
+
+document.getElementById('refineBtn').addEventListener('click', async ()=>{
+  if(!lastCheck){ showError('Run a check first.'); return; }
+  hideError();
+  const gaps = lastCheck.data.gaps || [];
+  const answered = gaps.map((g,idx)=>({ gap: g, answer: gapAnswers[idx] })).filter(a=>a.answer);
+  if(!answered.length){ showError('Answer at least one question above first.'); return; }
+  const apiKey = apiKeyEl.value.trim();
+  if(!apiKey){ showError('Add your Anthropic API key above first (get one at console.anthropic.com).'); return; }
+
+  const refineBtn = document.getElementById('refineBtn');
+  refineBtn.disabled = true;
+  const refineBtnOrigText = refineBtn.textContent;
+  refineBtn.textContent = 'Rebuilding your CV…';
+
+  const answersText = answered.map(a => {
+    const label = a.answer === 'yes' ? 'yes, has this experience' : a.answer === 'some' ? 'some/partial experience' : 'no experience with this';
+    return '- ' + a.gap + ' → candidate says: ' + label;
+  }).join('\n');
+
+  const systemPrompt = `You are an honest CV editor. You're given a candidate's original CV, a job posting, a prior gap analysis, and the candidate's own answers about whether they actually have experience in each gap area. Using ONLY what the candidate has confirmed, rewrite their CV to better target this specific job.
+
+Strict rules:
+- Never invent employers, job titles, dates, qualifications, or achievements the candidate hasn't confirmed.
+- Where the candidate answered "yes", weave that confirmed experience into the CV clearly and confidently, in language that matches the job posting's terminology, in the most relevant section.
+- Where the candidate answered "some/partial experience", include it but hedge appropriately (e.g. "working knowledge of", "hands-on exposure to", "developing skills in") — do not overstate it as expert-level.
+- Where the candidate answered "no", do NOT add that skill. If it's a hard requirement, the revised percentage must still reflect that honestly — do not inflate the score to be encouraging.
+- Keep everything else about the CV's real history intact; you're targeting and reordering, not fabricating a new career.
+- The verdict must be 2-3 direct sentences on whether it's now worth applying, in the same blunt, no-corporate-softening tone as before.
+
+Respond with ONLY valid JSON, no markdown fences, no preamble:
+{
+  "revised_percentage": <integer 0-100>,
+  "recommendation": "apply" | "stretch" | "skip",
+  "verdict": "<2-3 sentence direct verdict, reflecting the new answers>",
+  "changes": ["<short, specific bullet describing one thing that changed in the CV and why>", "..."],
+  "refined_cv": "<the full rewritten CV as plain text, ready to use>"
+}
+Include 3-8 items in changes. refined_cv must be a complete, standalone CV — not a diff, not partial.`;
+
+  const userPrompt = `ORIGINAL CV:\n"""\n${lastCheck.cv}\n"""\n\nJOB POSTING:\n"""\n${lastCheck.job}\n"""\n\nORIGINAL MATCH SCORE: ${lastCheck.data.overall_percentage}%\n\nGAP ANALYSIS AND CANDIDATE'S ANSWERS:\n${answersText}`;
+
+  try{
+    log('--- refining CV based on ' + answered.length + ' answered question(s) ---');
+    const data = await callClaudeJSON(apiKey, systemPrompt, userPrompt, 3500);
+    log('refine parsed OK — revised match ' + data.revised_percentage + '%', 'ok');
+    renderRefineResults(data);
+  }catch(err){
+    console.error(err);
+    log('refine failed: ' + (err && err.message ? err.message : String(err)), 'err');
+    showError(err && err.message ? err.message : 'Something went wrong refining your CV. Try again.');
+  }finally{
+    refineBtn.disabled = false;
+    refineBtn.textContent = refineBtnOrigText;
+  }
+});
+
+function renderRefineResults(data){
+  const origPct = Math.max(0, Math.min(100, Math.round(lastCheck.data.overall_percentage)));
+  const refinedPct = Math.max(0, Math.min(100, Math.round(data.revised_percentage)));
+
+  document.getElementById('origPct').textContent = origPct + '%';
+  document.getElementById('refinedPct').textContent = refinedPct + '%';
+  const origBar = document.getElementById('origBar');
+  const refinedBar = document.getElementById('refinedBar');
+  origBar.style.width = '0%';
+  refinedBar.style.width = '0%';
+  requestAnimationFrame(()=>{
+    origBar.style.width = origPct + '%';
+    refinedBar.style.width = refinedPct + '%';
+  });
+
+  const tag = document.getElementById('refineVerdictTag');
+  tag.textContent = data.recommendation === 'apply' ? (refinedPct > origPct ? 'Now worth applying' : 'Worth applying')
+    : data.recommendation === 'stretch' ? 'Still a stretch'
+    : 'Still skip this one';
+  tag.className = 'verdict-tag ' + (data.recommendation || 'stretch');
+
+  document.getElementById('refineVerdictBody').textContent = data.verdict || '';
+
+  const changesList = document.getElementById('changesList');
+  changesList.innerHTML = '';
+  (data.changes || []).forEach(c=>{
+    const li = document.createElement('li');
+    li.textContent = c;
+    changesList.appendChild(li);
+  });
+
+  document.getElementById('origCvBox').textContent = lastCheck.cv;
+
+  lastRefinedCv = data.refined_cv || '';
+  const refinedBox = document.getElementById('refinedCvBox');
+  const oldTokenCount = lastCheck.cv.split(/(\s+)/).length;
+  const newTokenCount = lastRefinedCv.split(/(\s+)/).length;
+  if(oldTokenCount * newTokenCount > 4000000){
+    refinedBox.textContent = lastRefinedCv; // too large to diff safely in-browser — show plain text instead
+  } else {
+    const parts = wordDiffHighlight(lastCheck.cv, lastRefinedCv);
+    refinedBox.innerHTML = parts.map(p => p.add ? '<span class="diff-add">' + escapeHtml(p.text) + '</span>' : escapeHtml(p.text)).join('');
+  }
+
+  document.getElementById('refineResults').style.display = 'block';
+  document.getElementById('refineResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.getElementById('copyRefinedBtn').addEventListener('click', async ()=>{
+  const btn = document.getElementById('copyRefinedBtn');
+  try{
+    await navigator.clipboard.writeText(lastRefinedCv || '');
+    const origText = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(()=>{ btn.textContent = origText; }, 1500);
+  }catch(e){
+    showError('Could not copy automatically — select the text in the refined CV box and copy it manually.');
+  }
+});
+
+document.getElementById('downloadRefinedBtn').addEventListener('click', ()=>{
+  if(!lastRefinedCv){ return; }
+  const htmlBody = '<pre style="font-family: Calibri, sans-serif; white-space: pre-wrap; font-size: 11pt;">' + escapeHtml(lastRefinedCv) + '</pre>';
+  downloadAsWord('Refined-CV.doc', htmlBody);
+});
+
+function downloadAsWord(filename, htmlContent){
+  const preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export</title></head><body>";
+  const postHtml = "</body></html>";
+  const fullHtml = preHtml + htmlContent + postHtml;
+  const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 function escapeHtml(str){
