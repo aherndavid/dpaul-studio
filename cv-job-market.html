@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your CV, Built For Today's Market — Clever CV Checker</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --charcoal: #131413;
+  --off-white: #FAF9F6;
+  --red: #c0392b;
+  --accent: #ec3013;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-cond: 'Barlow Condensed', var(--font-sans);
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--off-white); color: var(--charcoal); }
+html { font-size: 18px; }
+body { font-family: var(--font-sans); min-height: 100vh; }
+
+.wrap { max-width: 780px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+.kicker { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem; }
+
+h1 { font-family: var(--font-cond); font-weight: 800; font-size: 2.9rem; line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 1rem; }
+h2 { font-family: var(--font-cond); font-weight: 700; font-size: 2.1rem; line-height: 1.12; letter-spacing: -0.01em; margin-bottom: 1.3rem; }
+h3 { font-family: var(--font-cond); font-weight: 700; font-size: 1.35rem; margin-bottom: 0.5rem; }
+
+.subtitle { font-size: 1.15rem; line-height: 1.5; color: #444; max-width: 34ch; }
+.lede { font-size: 1.05rem; line-height: 1.55; color: #444; max-width: 42ch; }
+
+section.block { padding: 3.2rem 0; border-bottom: 1px dotted #ccc; }
+section.block:last-of-type { border-bottom: none; }
+
+section.chapter { background: var(--accent); color: var(--off-white); margin: 0 -1.5rem; padding: 3.6rem 1.5rem; }
+section.chapter .kicker { color: rgba(250,249,246,0.75); }
+section.chapter h1 { color: var(--off-white); max-width: 16ch; margin-bottom: 0; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2rem; }
+@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; gap: 1.8rem; } }
+.two-col > div { padding-top: 1.2rem; border-top: 2px solid var(--charcoal); }
+.step-num { font-family: var(--font-cond); font-weight: 800; font-size: 1.4rem; color: var(--accent); margin-bottom: 0.6rem; }
+.two-col p.body-text { color: #444; line-height: 1.5; font-size: 0.98rem; max-width: 28ch; }
+
+table.compare { width: 100%; border-collapse: collapse; margin-top: 1.8rem; font-size: 0.92rem; }
+table.compare th { text-align: left; font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: #777; padding: 0.6rem 0.8rem; border-bottom: 2px solid var(--charcoal); }
+table.compare td { padding: 0.85rem 0.8rem; border-bottom: 1px solid #ddd; line-height: 1.4; }
+table.compare td:first-child { color: #777; font-size: 0.85rem; width: 30%; }
+
+.list-numbered { list-style: none; margin-top: 1.6rem; }
+.list-numbered li { display: flex; align-items: baseline; gap: 1.2rem; padding: 1rem 0; border-bottom: 1px dotted #ccc; }
+.list-numbered li:last-child { border-bottom: none; }
+.list-numbered .num { font-family: var(--font-cond); font-weight: 800; font-size: 1.3rem; color: var(--accent); flex-shrink: 0; width: 2.2rem; }
+.list-numbered .txt { font-size: 1rem; line-height: 1.4; }
+
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #ddd; margin-top: 2rem; }
+@media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+.card { background: var(--off-white); padding: 1.6rem; }
+.card .step-num { margin-bottom: 0.4rem; }
+.card p { color: #444; font-size: 0.95rem; line-height: 1.5; }
+
+.cta-row { margin-top: 2.2rem; }
+.cta { display: inline-block; font-family: var(--font-cond); font-size: 1.05rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: var(--charcoal); color: var(--off-white); border: 1px solid var(--charcoal); padding: 0.85rem 2.3rem; text-decoration: none; transition: all 0.15s ease; }
+.cta:hover { background: transparent; color: var(--charcoal); }
+
+.back-link { display: inline-block; font-family: var(--font-mono); font-size: 0.78rem; color: #777; text-decoration: none; margin-bottom: 2rem; }
+.back-link:hover { color: var(--charcoal); text-decoration: underline; }
+
+footer { text-align: center; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px dotted #ccc; }
+footer a { font-family: var(--font-mono); font-size: 0.72rem; color: #999; text-decoration: none; letter-spacing: 0.05em; }
+footer a:hover { color: var(--charcoal); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back-link" href="cv-fit-checker.html">&larr; Back to Clever CV Checker</a>
+
+  <section class="block" style="padding-top:0;">
+    <p class="kicker">Career Resources</p>
+    <h1>Your CV, Built For Today's Market</h1>
+    <p class="subtitle">Why a strong CV matters more than ever — and how the job market got here.</p>
+  </section>
+
+  <section class="chapter">
+    <p class="kicker">01</p>
+    <h1>Why Your CV Still Matters</h1>
+  </section>
+
+  <section class="block">
+    <h2>Two Readers Look At Every CV</h2>
+    <div class="two-col">
+      <div>
+        <p class="step-num">01</p>
+        <h3>A Person, Skimming Fast</h3>
+        <p class="body-text">A recruiter moves through many CVs quickly, looking for a clear story — role, results, fit.</p>
+      </div>
+      <div>
+        <p class="step-num">02</p>
+        <h3>Software, Matching Keywords</h3>
+        <p class="body-text">Many companies now screen applications with tracking software before a person sees them at all.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <p class="kicker">02</p>
+    <h1>The Job Market Has Changed</h1>
+  </section>
+
+  <section class="block">
+    <h2>Five Years Ago vs. Today</h2>
+    <table class="compare">
+      <thead>
+        <tr><th></th><th>Five Years Ago</th><th>Today</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Where people worked</td><td>Mostly in one office</td><td>Remote and hybrid are common</td></tr>
+        <tr><td>Who you competed with</td><td>Candidates nearby</td><td>Candidates from anywhere</td></tr>
+        <tr><td>First screening</td><td>Usually a hiring manager</td><td>Often software, before any person</td></tr>
+        <tr><td>What stood out</td><td>A polished, general resume</td><td>A CV tailored to each role</td></tr>
+        <tr><td>Career pace</td><td>Longer stretches in one role</td><td>More frequent moves between roles</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="block">
+    <p class="kicker">The New Competition</p>
+    <h2 style="max-width:20ch;">Remote work removed geography as a limit — <span style="color:var(--accent);">a single opening can now draw applicants from anywhere.</span></h2>
+    <p class="lede">Standing out takes more than a good resume. It takes the right one, for each role you apply to.</p>
+  </section>
+
+  <section class="chapter">
+    <p class="kicker">03</p>
+    <h1>Writing A CV That Works Now</h1>
+  </section>
+
+  <section class="block">
+    <h2>What Employers Look For Now</h2>
+    <ul class="list-numbered">
+      <li><span class="num">01</span><span class="txt">Skills and keywords that match the posting</span></li>
+      <li><span class="num">02</span><span class="txt">Clear, specific achievements — even simple ones</span></li>
+      <li><span class="num">03</span><span class="txt">A format that's easy to scan, by people and software</span></li>
+      <li><span class="num">04</span><span class="txt">Consistency across your CV, application and profiles</span></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2>Common Mistakes To Avoid</h2>
+    <ul class="list-numbered">
+      <li><span class="num">01</span><span class="txt">Sending the same CV to every application</span></li>
+      <li><span class="num">02</span><span class="txt">Dense paragraphs instead of scannable bullets</span></li>
+      <li><span class="num">03</span><span class="txt">Missing the exact keywords used in the job posting</span></li>
+      <li><span class="num">04</span><span class="txt">Formatting that confuses screening software</span></li>
+    </ul>
+  </section>
+
+  <section class="block" style="border-bottom:none;">
+    <p class="kicker">Next Step</p>
+    <h2 style="max-width:16ch;">Put Your CV To The Test</h2>
+    <p class="lede">Great opportunities move fast — make sure your CV is ready for them.</p>
+    <div class="cards">
+      <div class="card">
+        <p class="step-num">01</p>
+        <h3>Check It Against Real Postings</h3>
+        <p>See how your CV holds up against roles being advertised right now.</p>
+      </div>
+      <div class="card">
+        <p class="step-num">02</p>
+        <h3>Tailor It To The Role</h3>
+        <p>Tighten your CV for a specific job — without inventing anything that isn't true.</p>
+      </div>
+    </div>
+    <div class="cta-row">
+      <a class="cta" href="cv-fit-checker.html">Check My CV</a>
+    </div>
+  </section>
+
+  <footer>
+    <a href="https://dpaul-software.uk" target="_blank" rel="noopener">dpaul-software.uk</a>
+  </footer>
+
+</div>
+</body>
+</html>
